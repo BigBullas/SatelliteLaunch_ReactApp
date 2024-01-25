@@ -1,0 +1,15 @@
+.card_container__simple {
+    margin-top: 20px;
+}
+
+.card__detailed {
+    display: flex;
+    flex-flow: row-reverse wrap;
+    justify-content: space-around;
+}
+
+.card-img_container__detailed {
+    display: block;
+    width: 500px;
+    height: 500px;
+}

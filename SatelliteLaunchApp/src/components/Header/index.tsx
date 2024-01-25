@@ -18,11 +18,11 @@ const Header: FC = () => (
         </header>
 
         <div className="header-title">
-        Космодром Восточный
+            Космодром Восточный
         </div>
 
         <div className="header-subtitle">
-        Один из самых масштабных проектов России ХХI века
+            Один из самых масштабных проектов России ХХI века
         </div>
      </div>
 )
