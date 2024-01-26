@@ -1,0 +1,26 @@
+.card {
+    display: block;
+    max-width: 300px;
+    background-color: #99CCFF;
+  }
+  
+  .card-img_container {
+    display: block;
+    max-width: 300px;
+    max-height: 300px;
+    width: auto;
+    height: 200px;
+  }
+  
+  .card-img {
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+  
+    width: 100%;
+    height: 100%;
+  }
+  
+  .card-btn_container {
+    display: flex;
+  }
