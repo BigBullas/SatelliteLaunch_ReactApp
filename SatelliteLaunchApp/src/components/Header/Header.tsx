@@ -3,7 +3,7 @@ import './Header.css'
 
 const Header: FC = () => (
     <div className="header">
-        <header>
+        <header className='text_desc'>
             <div className="header-icon_container">
                 <div className="roscosmos_icon"></div>
                 <div>Роскосмос</div>
@@ -17,11 +17,11 @@ const Header: FC = () => (
             </div>
         </header>
 
-        <div className="header-title">
+        <div className="title header-title">
             Космодром Восточный
         </div>
 
-        <div className="header-subtitle">
+        <div className="text_desc header-subtitle">
             Один из самых масштабных проектов России ХХI века
         </div>
      </div>

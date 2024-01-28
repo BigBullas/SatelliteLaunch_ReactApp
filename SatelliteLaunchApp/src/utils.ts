@@ -1,4 +1,4 @@
-export const dateConversion = (date: Date): string => {
+export const dateConversion = (date: Date = new Date(), withTime: boolean = true): string => {
     if (date) {
         date = new Date(date);
     } else {
@@ -20,6 +20,22 @@ export const dateConversion = (date: Date): string => {
         seconds = '0' + seconds;
     }
 
+    if (withTime) {
+        return hours + ':' + minutes + ':' + seconds + ' ' + date.toLocaleDateString('en-GB');
+    }
+    return date.toLocaleDateString('en-GB');
+}
 
-    return hours + ':' + minutes + ':' + seconds + ' ' + date.toLocaleDateString('en-GB')
+export const dateComparison = (firstDate: Date | string, secondDate: Date | string): boolean => {
+    firstDate = new Date(firstDate);
+    if (isNaN(firstDate.getTime())) {
+        return true;
+    }
+
+    secondDate = new Date(secondDate);
+    if (isNaN(secondDate.getTime())) {
+        return true;
+    }
+
+    return firstDate.getTime() >= secondDate.getTime();
 }

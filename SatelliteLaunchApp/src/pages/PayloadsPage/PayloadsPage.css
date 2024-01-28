@@ -3,7 +3,6 @@
     flex-wrap: wrap;
     gap: 5px;
     justify-content: left;
-    margin-top: 20px;
 }
   
 .card_container {
@@ -11,5 +10,74 @@
     flex-wrap: wrap;
     gap: 20px;
     justify-content: space-around;
-    margin-top: 20px;
+    margin-top: 1.5em;
+}
+
+
+/* CSS styles */
+
+body {
+    background-color: #ECE9F2;
+    /* background-color: #ECF0F1; */
+  }
+  
+.list-options {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 1em;
+    align-items: center;
+
+    padding: 0 1em 0 1em;
+}
+
+input {
+    all: unset;
+}
+
+.input_search {
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+
+    border: 1px solid white;
+    border-radius: 5px;
+
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.input_search:hover, .input_search:focus {
+    border-color: #9048F0; 
+}
+
+.btn_find {
+    flex-grow: 0.3;
+
+    background-color: #9048F0;
+    color: white;
+
+    border: 1px solid #9048F0;
+    border-radius: 5px;
+
+    padding: 7px;
+    padding-left: 10px;
+    padding-right: 10px;
+
+    text-align: center;
+    cursor: pointer;
+}
+
+.filter__container {
+    display: flex;
+    flex-direction: raw wrap;
+    align-items: center;
+}
+
+.filter__label {
+    padding: 0 1em 0 1em;
+}
+
+.filter__input-container {
+    display: flex;
+    flex-direction: row;
 }

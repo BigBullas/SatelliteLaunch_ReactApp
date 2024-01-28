@@ -37,10 +37,6 @@
     font-size: medium;
   }
   
-  .under_header {
-    height: 3.5em;
-  }
-  
   .header-icon_container {
     display: flex;
     justify-content: space-between;
@@ -85,7 +81,6 @@
   }
   
   .header-subtitle {
-    font-weight: bolder;
     font-size: large;
     text-align: center;
   

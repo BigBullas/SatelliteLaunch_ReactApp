@@ -1,75 +1,86 @@
 import { FC, useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { PayloadCardType } from '../../types';
+import payloadsMock from '../../mocks/payloads'
+import './SinglePayloadPage.css'
+import DateView from '../../components/DateView/DateView';
 
-const data: string[] = [
-    'Берик Дондаррион',
-    'Леди Мелиссандра',
-    'Полливер',
-    'Уолдер Фрей',
-    'Тайвин Ланнистер',
-    'Сир Мерин Трэнт',
-    'Король Джоффри',
-    'Сир Илин Пейн',
-    'Гора',
-    'Пес',
-    'Серсея Ланнистер',
-]
+type Props = {
+    changeBreadcrump: Function
+}
 
-const SinglePayloadPage: FC = () => {
-    // В функциональных компонентах для работы с состоянием можно использовать хук useState()
-    // Он возвращает кортеж из двух элементов:
-    // 1 элемент - объект состояния
-    // 2 элемент - метод который позволит нам обновить состояние
-    const [randomName, setRandomName] = useState('')
+const SinglePayloadPage: FC<Props> = ({changeBreadcrump}) => {
+    const { id } = useParams<string>();
+    const [payload, setPayload] = useState<PayloadCardType>()
 
-    // Кстати, это хороший пример деструктуризации массива в JavaScript
-    const [names, setNames] = useState(data)
+    useEffect(() => {
+        getPayloadById();
+    }, [])
 
-    const [showNames, setShowNames] = useState(false)
+    const getPayloadById = async () => {
+        try {
+            let query = `http://localhost:8080/payloads/${ id }`;
 
-    // В данном хендлере мы изменяем состояние на какое-то конкретное
-    const handleShowNames = () => {
-        setShowNames(true)
-    }
+            const response = await fetch(query);
 
-    // В данном хендлере мы изменяем состояние на какое-то конкретное
-    const handleHideNames = () => {
-        setShowNames(false)
-    }
+            console.log(response);
 
-    useEffect(()=>{
-        console.log('Этот код выполняется только на первом рендере компонента')
-        // В данном примере можно наблюдать Spread syntax (Троеточие перед массивом)
-        setNames((names) => [...names, 'Бедный студент'])
+            const data = await response.json();
+            
+            console.log("data: ", data);
 
-        return () => {
-            console.log('Этот код выполняется, когда компонент будет размонтирован')
+            setPayload(data.payload);
+            changeBreadcrump(data.payload?.title, `payloads/${ data.payload?.payload_id }`);
+        } catch (error) {
+            console.log("Error: ", error);
+            setPayload(payloadsMock[Number(id) - 1]);
+            changeBreadcrump(payloadsMock[Number(id) - 1]?.title, `payloads/${ payloadsMock[Number(id) - 1]?.payload_id }`);
         }
-    },[])
-
-    useEffect(()=>{
-        console.log('Этот код выполняется каждый раз, когда изменится состояние showNames')
-        setRandomName(names[Math.floor(Math.random()*names.length)])
-    },[showNames])
+    }
 
     return (
         <div>
-            <h1>QWERTYUI</h1>
-            <h3>Случайное имя из списка: {randomName}</h3>
-            {/*Кнопка для того, чтобы показать имена*/}
-            <button onClick={handleShowNames}>Хочу увидеть список имен</button>
-            {/*Кнопка для того, чтобы скрыть имена*/}
-            <button onClick={handleHideNames}>Хочу скрыть список имен</button>
-
-            {/*React отрисует список только если showNames будет равен true, boolean значения игнорируются при отрисовке*/}
-            {showNames && (
-                <ul>
-                    {names.map((name, index)=> (
-                        <li key={index}>
-                            <span>{name}</span>
-                        </li>
-                    ))}
-                </ul>
-            )}
+            <div className="card_container__simple">
+                <div id={ String(payload?.payload_id) } className="card__detailed">
+                    <div className="card-img_container__detailed">
+                        <div className="card-img" style={{ backgroundImage: `url(${ payload?.img_url })` }}></div>
+                    </div>
+                    <div className="card-content">
+                        {/* <div className="card-btn_container"> */}
+                            {/* <Link to="/payloads">Назад</Link> */}
+                            {/* <a href='http://localhost:3000/payloads'>Назад</a> */}
+                            {/* <form action="/home">
+                            <input type="submit" defaultValue="Назад" />
+                            </form> */}
+                            {/* <form action="http://localhost:8080/payload/{{ .card.PayloadId }}" method="post">
+                            <button className="card-button">Удалить услугу</button>
+                            </form> */}
+                        {/* </div> */}
+                        <div className="card-text_container">
+                            <h3 className='title'>
+                            { payload?.title }
+                            </h3>
+                            <div>
+                                <div>
+                                    Описание: <span>{ payload?.description }</span>
+                                </div>
+                                <div>
+                                    Грузоподъёмность: <span>{ payload?.load_capacity } тонн</span>
+                                </div>
+                                <div>
+                                    Планируемая дата полёта: <DateView dateStart={payload?.flight_date_start} dateEnd={payload?.flight_date_end} isShort={true}></DateView>
+                                </div>
+                                <div>
+                                    Желаемая цена услуги: <span>{ payload?.desired_price } млн рублей</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className='card__description'>
+                    { payload?.detailed_desc }
+                </div>
+            </div>
         </div>
     )
 }

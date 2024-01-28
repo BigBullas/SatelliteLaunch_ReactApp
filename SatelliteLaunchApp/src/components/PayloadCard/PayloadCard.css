@@ -1,10 +1,16 @@
 .card {
     display: block;
     max-width: 300px;
-    background-color: #99CCFF;
+    background-color: #FFFFFF;
+    border: 1px solid #0F091B;
+    border-radius: 10px;
+    /* 13131A */
+    /* 0F091B */
   }
   
   .card-img_container {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
     display: block;
     max-width: 300px;
     max-height: 300px;
@@ -13,12 +19,19 @@
   }
   
   .card-img {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
   
     width: 100%;
     height: 100%;
+  }
+
+  .card-text_container {
+    padding: 5px;
   }
   
   .card-btn_container {

@@ -1,0 +1,23 @@
+.breadcrump_container {
+	display: flex; 
+	justify-content: start;
+    padding-top: 1.5em;
+    padding-bottom: 1.5em;
+}
+
+.breadcrump__item {
+	display: flex;
+}
+
+.breadcrump__part {
+	margin-right: 1em;
+}
+
+.divider {
+	display: block;
+	width: 2px;
+	height: 1.5em;
+	margin-right: 0.5em;
+	background-color: red;
+    margin-left: 1.5em;
+}

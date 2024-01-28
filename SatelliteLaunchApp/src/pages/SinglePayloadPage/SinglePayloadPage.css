@@ -1,10 +1,10 @@
 .card_container__simple {
-    margin-top: 20px;
+    margin-top: 0px;
 }
 
 .card__detailed {
     display: flex;
-    flex-flow: row-reverse wrap;
+    flex-flow: row wrap;
     justify-content: space-around;
 }
 
@@ -12,4 +12,8 @@
     display: block;
     width: 500px;
     height: 500px;
+}
+
+.card__description {
+    padding: 1.5em;
 }

@@ -1,15 +1,28 @@
 body {
-  padding: 0px;
+  	padding: 0px;
 	margin: 0px;
 	border: none;
 }
 
 #root {
-  width: 100%;
-  padding: 0px;
+	width: 100%;
+	padding: 0px;
 	margin: 0px;
 	border: none;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: bold;
+	font-family: 'Montserrat', sans-serif;
+	background-color: rgb(231, 228, 228);
 }
 
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
+.title {
+	font-family: 'ST-SIMPLESQUARE', sans-serif;
+	font-weight: bold;
+}
+
+.text_desc {
+	font-family: 'Montserrat', sans-serif;
+}
