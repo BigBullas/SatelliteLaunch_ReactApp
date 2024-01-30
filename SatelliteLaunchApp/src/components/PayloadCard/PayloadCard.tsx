@@ -1,5 +1,7 @@
 import { FC } from 'react'
 import './PayloadCard.css'
+import defaultImage from '../../assets/default_image.jpg';
+
 import { PayloadCardType } from '../../types';
 import { Link } from 'react-router-dom';
 import DateView from '../DateView/DateView';
@@ -12,7 +14,7 @@ const PayloadCard: FC<Props> = ({ data }) => (
     <div id ={ String(data.payload_id) } className="card">
         <Link to={`/payloads/${ data.payload_id }`}>
             <div className="card-img_container">
-                <div className="card-img" style={{ backgroundImage: `url(${ data.img_url })` }}></div>
+                <div className="card-img" style={{ backgroundImage: `url(${ data.img_url ||  defaultImage })` }}></div>
             </div>
             <div className="card-content">
                 <div className="card-text_container">

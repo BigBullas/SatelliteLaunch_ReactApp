@@ -30,26 +30,38 @@ const PayloadsPage: FC<Props> = ({ changeBreadcrump }) => {
     const getPayloadList = async () => {
         setLoading(true);
         try {
-            let query = `http://localhost:8080/payloads?`;
+            let flag = false;
+            let query = '';
 
+            
             if (spaceSatellite) {
                 query += `space_satellite=${ spaceSatellite }&`;
+                flag = true;
             }
 
-            if (loadCapacityStart) {
+            if (loadCapacityStart != 0) {
                 query += `load_capacity_start=${ loadCapacityStart }&`;
+                flag = true;
             }
 
-            if (loadCapacityEnd) {
+            if (loadCapacityEnd != 500) {
                 query += `load_capacity_end=${ loadCapacityEnd }&`;
+                flag = true;
             }
 
             if (flightDateStart) {
                 query += `flight_date_start=${ flightDateStart }&`;
+                flag = true;
             }
 
             if (flightDateEnd) {
                 query += `flight_date_end=${ flightDateEnd }&`;
+                flag = true;
+            }
+            if (flag) {
+                query = `http://localhost:8080/payloads?` + query;
+            } else {
+                query = `http://localhost:8080/payloads`;
             }
 
             // if (desiredPriceStart) {
@@ -59,6 +71,8 @@ const PayloadsPage: FC<Props> = ({ changeBreadcrump }) => {
             // if (desiredPriceEnd) {
             //     query += `desired_price_end=${ desiredPriceEnd }&`;
             // }
+
+            console.log("flightDateStart: ", flightDateStart);
 
             const response = await fetch(query);
             const data = await response.json();
@@ -70,7 +84,7 @@ const PayloadsPage: FC<Props> = ({ changeBreadcrump }) => {
             setPayloads(data.payloads);
         } catch (error) {
             console.log("Error: ", error);
-            
+
             setPayloads(payloadsMock.filter((item) =>{
                 return  (item.title.includes(spaceSatellite)
                 && (loadCapacityStart === '' || loadCapacityStart === 0 || item.load_capacity >= Number(loadCapacityStart))

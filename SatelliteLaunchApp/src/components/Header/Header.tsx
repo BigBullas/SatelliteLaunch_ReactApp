@@ -1,5 +1,6 @@
 import { FC } from 'react'
 import './Header.css'
+import { Link } from 'react-router-dom';
 
 const Header: FC = () => (
     <div className="header">
@@ -9,7 +10,8 @@ const Header: FC = () => (
                 <div>Роскосмос</div>
             </div>
             <div className="header-navbar_container">
-                <div>Запросы на полёт</div>
+                {/* <div>Запросы на полёт</div> */}
+                <Link to="/payloads/">Космические аппараты</Link>
             </div>
             <div className="header-user_container">
                 <div>Иконка</div>

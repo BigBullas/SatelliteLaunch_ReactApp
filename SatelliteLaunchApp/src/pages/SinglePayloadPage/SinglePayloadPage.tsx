@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import { PayloadCardType } from '../../types';
 import payloadsMock from '../../mocks/payloads'
 import './SinglePayloadPage.css'
+import defaultImage from '../../assets/default_image.jpg';
 import DateView from '../../components/DateView/DateView';
 
 type Props = {
@@ -19,7 +20,7 @@ const SinglePayloadPage: FC<Props> = ({changeBreadcrump}) => {
 
     const getPayloadById = async () => {
         try {
-            let query = `http://localhost:8080/payloads/${ id }`;
+            let query = `http://localhost:8080/api/payloads/${ id }`;
 
             const response = await fetch(query);
 
@@ -43,7 +44,7 @@ const SinglePayloadPage: FC<Props> = ({changeBreadcrump}) => {
             <div className="card_container__simple">
                 <div id={ String(payload?.payload_id) } className="card__detailed">
                     <div className="card-img_container__detailed">
-                        <div className="card-img" style={{ backgroundImage: `url(${ payload?.img_url })` }}></div>
+                        <div className="card-img" style={{ backgroundImage: `url(${ payload?.img_url || defaultImage})` }}></div>
                     </div>
                     <div className="card-content">
                         {/* <div className="card-btn_container"> */}
