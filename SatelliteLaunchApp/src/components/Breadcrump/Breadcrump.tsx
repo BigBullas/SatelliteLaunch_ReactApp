@@ -10,7 +10,7 @@ const Breadcrump: FC<Props> = ({desc, path}) => (
     <div className="breadcrump_container">
         <div className='divider'></div>
 
-        <Link to="/payloads/" className="breadcrump__item breadcrump__part">Космические аппараты</Link>
+        <Link to="/" className="breadcrump__item breadcrump__part">Космические аппараты</Link>
 
         {desc ?
         <Link to={`/${path}`} className="breadcrump__item">

@@ -11,11 +11,11 @@ const Header: FC = () => (
             </div>
             <div className="header-navbar_container">
                 {/* <div>Запросы на полёт</div> */}
-                <Link to="/payloads/">Космические аппараты</Link>
+                <Link to="/">Космические аппараты</Link>
             </div>
             <div className="header-user_container">
-                <div>Иконка</div>
-                <div>Алик Нигматуллин</div>
+                <div>Войти</div>
+                <div>Регистрация</div>
             </div>
         </header>
 

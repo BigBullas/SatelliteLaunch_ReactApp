@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { HashRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import SinglePayloadPage from './pages/SinglePayloadPage'
 import PayloadsPage from './pages/PayloadsPage'
 import Header from './components/Header/Header'
@@ -13,17 +13,15 @@ const App: React.FC = () => {
     setPath(newPath);
   }
   return (
-    <HashRouter>
+    <BrowserRouter>
       <Header />
       <Breadcrump desc={ desc } path= { path } />
       <Routes>
-        <Route path="/payloads" element={<PayloadsPage changeBreadcrump = {changeBreadcrump} />} />
+        <Route path="/" element={<PayloadsPage changeBreadcrump = {changeBreadcrump} />} />
         <Route path="/payloads/:id" element={<SinglePayloadPage changeBreadcrump = {changeBreadcrump} />} />
       </Routes>
-    </HashRouter>
+    </BrowserRouter>
   )
 }
 
 export default App
-
-// TODO: сделать Github Pages

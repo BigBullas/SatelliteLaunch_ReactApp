@@ -77,7 +77,6 @@ const PayloadsPage: FC<Props> = ({ changeBreadcrump }) => {
             const response = await fetch(query);
             const data = await response.json();
 
-            // TODO: добавить фильтры на бэкенде
             
             console.log("data: ", data);
 
