@@ -72,12 +72,9 @@ const PayloadsPage: FC<Props> = ({ changeBreadcrump }) => {
             //     query += `desired_price_end=${ desiredPriceEnd }&`;
             // }
 
-            console.log("flightDateStart: ", flightDateStart);
-
             const response = await fetch(query);
             const data = await response.json();
 
-            
             console.log("data: ", data);
 
             setPayloads(data.payloads);

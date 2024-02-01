@@ -1,5 +1,6 @@
 {
-  "name": "satellitelaunchapp",
+  "name": "satelliteaunchapp",
+  "homepage": "https://bigbullas.github.io/SatelliteLaunch_ReactApp/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
