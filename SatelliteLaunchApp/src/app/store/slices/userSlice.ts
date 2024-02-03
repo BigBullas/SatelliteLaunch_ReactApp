@@ -10,7 +10,7 @@ const initialState = {
 
 const dataSlice = createSlice({
   name: 'user',
-  initialState: { Data: initialState, isAuthorized: false},
+  initialState: { Data: initialState, isAuthorized: true},
   reducers: {
     setData(state, { payload }) {
       state.Data = payload.Data;
@@ -30,3 +30,5 @@ const dataSlice = createSlice({
 export const { setData: setUserDataAction, cleanUser: cleanUserDataAction } = dataSlice.actions
 
 export default dataSlice.reducer
+
+// TODO: поменять 13 строчку на это: initialState: { Data: initialState, isAuthorized: false},

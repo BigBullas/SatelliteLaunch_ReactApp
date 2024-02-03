@@ -284,17 +284,25 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   };
   payloads = {
     /**
-     * @description Retrieve a list of payloads based on the provided query.
+     * @description Retrieves a list of payloads based on the provided filters
      *
      * @tags Payloads
      * @name PayloadsList
-     * @summary Get payload list
+     * @summary Get Payload List
      * @request GET:/payloads
      */
     payloadsList: (
       query?: {
-        /** Query string to filter threats */
+        /** Space Satellite */
         space_satellite?: string;
+        /** Load Capacity Start */
+        load_capacity_start?: string;
+        /** Load Capacity End */
+        load_capacity_end?: string;
+        /** Flight Date Start */
+        flight_date_start?: string;
+        /** Flight Date End */
+        flight_date_end?: string;
       },
       params: RequestParams = {},
     ) =>
@@ -349,15 +357,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Add a payload to a planned flight.
+     * @description Adds a specified payload to a planned flight. The user must provide their creator ID and the payload ID in the request body.
      *
      * @tags Payloads
      * @name RocketFlightCreate
-     * @summary Add payload to flight
+     * @summary Add Payload to Flight
      * @request POST:/payloads/rocket_flight
      */
     rocketFlightCreate: (payload: number, params: RequestParams = {}) =>
-      this.request<string, any>({
+      this.request<number, any>({
         path: `/payloads/rocket_flight`,
         method: "POST",
         body: payload,

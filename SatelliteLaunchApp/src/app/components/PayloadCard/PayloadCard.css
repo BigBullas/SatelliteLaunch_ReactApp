@@ -36,4 +36,23 @@
   
   .card-btn_container {
     display: flex;
+    justify-content: center;
+    padding: 0.5em 0 0.5em 0;
   }
+
+  .btn_add {
+    flex-grow: 0.3;
+
+    background-color: #9048F0;
+    color: white;
+
+    border: 1px solid #9048F0;
+    border-radius: 5px;
+
+    padding: 7px;
+    padding-left: 10px;
+    padding-right: 10px;
+
+    text-align: center;
+    cursor: pointer;
+}

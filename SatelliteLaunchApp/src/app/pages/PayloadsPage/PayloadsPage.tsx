@@ -1,114 +1,70 @@
 import { FC, useEffect, useState } from 'react'
 import PayloadCard from '../../components/PayloadCard';
-import payloadsMock from '../../mocks/payloads';
 import './PayloadsPage.css';
 import { PayloadCardType } from '../../types';
-import { dateComparison } from '../../utils';
+import { usePayloadList } from '../../hooks/usePayloadList'
+import { api } from '../../api';
 
 type Props = {
+    payloads: PayloadCardType[]
     changeBreadcrump: Function
+    getPayloadList: Function
+    loading: boolean
+    setDraftID: Function
+    draftID: number | null | undefined
 }
 
-const PayloadsPage: FC<Props> = ({ changeBreadcrump }) => {
-    const [spaceSatellite, setSpaceSatellite] = useState<string>('');
-    const [loadCapacityStart, setLoadCapacityStart] = useState<number | string>(0);
-    const [loadCapacityEnd, setLoadCapacityEnd] = useState<number | string>(500);
-    const [flightDateStart, setFlightDateStart] = useState<Date | string>('');
-    const [flightDateEnd, setFlightDateEnd] = useState<Date | string>('');
-    // const [desiredPriceStart, setDesiredPriceStart] = useState();
-    // const [desiredPriceEnd, setDesiredPriceEnd] = useState();
+const PayloadsPage: FC<Props> = ({ payloads, changeBreadcrump, getPayloadList, loading, draftID, setDraftID }) => {
+    const { loadCapStart, loadCapEnd, flDateStart, flDateEnd, spaceSatValue, 
+        setLoadCapStart, setLoadCapEnd, setFlDateStart, setFlDateEnd, setSpaceSatValue } = usePayloadList();
 
-    const [payloads, setPayloads] = useState<PayloadCardType[]>();
+    const [spaceSatellite, setSpaceSatellite] = useState<string>(spaceSatValue);
+    const [loadCapacityStart, setLoadCapacityStart] = useState<number | string>(loadCapStart);
+    const [loadCapacityEnd, setLoadCapacityEnd] = useState<number | string>(loadCapEnd);
+    const [flightDateStart, setFlightDateStart] = useState<Date | string>(flDateStart);
+    const [flightDateEnd, setFlightDateEnd] = useState<Date | string>(flDateEnd);
 
-    const [loading, setLoading] = useState(false);
-    const [searchFlag, setSearchFlag] = useState(false);
+    const [payloadsInDraft, setPayloadsInDraft] = useState<PayloadCardType[]>([])
 
     useEffect(() => {
-        getPayloadList();
-    }, [searchFlag])
-
-    const getPayloadList = async () => {
-        setLoading(true);
-        try {
-            let flag = false;
-            let query = '';
-
-            
-            if (spaceSatellite) {
-                query += `space_satellite=${ spaceSatellite }&`;
-                flag = true;
-            }
-
-            if (loadCapacityStart != 0) {
-                query += `load_capacity_start=${ loadCapacityStart }&`;
-                flag = true;
-            }
-
-            if (loadCapacityEnd != 500) {
-                query += `load_capacity_end=${ loadCapacityEnd }&`;
-                flag = true;
-            }
-
-            if (flightDateStart) {
-                query += `flight_date_start=${ flightDateStart }&`;
-                flag = true;
-            }
-
-            if (flightDateEnd) {
-                query += `flight_date_end=${ flightDateEnd }&`;
-                flag = true;
-            }
-            if (flag) {
-                query = `http://localhost:8080/payloads?` + query;
-            } else {
-                query = `http://localhost:8080/payloads`;
-            }
-
-            // if (desiredPriceStart) {
-            //     query += `desired_price_start=${ desiredPriceStart }&`;
-            // }
-
-            // if (desiredPriceEnd) {
-            //     query += `desired_price_end=${ desiredPriceEnd }&`;
-            // }
-
-            const response = await fetch(query);
-            const data = await response.json();
-
-            console.log("data: ", data);
-
-            setPayloads(data.payloads);
-        } catch (error) {
-            console.log("Error: ", error);
-
-            setPayloads(payloadsMock.filter((item) =>{
-                return  (item.title.includes(spaceSatellite)
-                && (loadCapacityStart === '' || loadCapacityStart === 0 || item.load_capacity >= Number(loadCapacityStart))
-                && (loadCapacityEnd ==='' || loadCapacityEnd === 500 || item.load_capacity <= Number(loadCapacityEnd)) 
-                && (dateComparison(item.flight_date_end, flightDateStart))
-                && (dateComparison(flightDateEnd, item.flight_date_start))
-                )
-            }));
+        if (typeof(draftID) === 'number' && draftID) {
+            getPayloadsFromDraft();
         }
         changeBreadcrump('', '');
-        setLoading(false);
-    }
+    }, [])
 
-    const handleFlightDateStart = (event: any) => {
-        setFlightDateStart(event.target.value)
+    const getPayloadsFromDraft = async () => {
+        if (typeof(draftID) === 'number' && draftID) {
+            try {
+                const response = await api.rocketFlights.rocketFlightsDetail(draftID);
+        
+                // @ts-ignore
+                const { payloads: receivedPayloadsInDraft } = response.data;
+        
+                console.log("data: ", response.data, receivedPayloadsInDraft);
+                setPayloadsInDraft(receivedPayloadsInDraft);
+        
+            } catch (error) {
+                console.log("Error: ", error);
+            }
+        }
     }
+    
+    const handleSpaceSatellite = (event: any) => setSpaceSatellite(event.target.value);
 
-    const handleFlightDateEnd = (event: any) => {
-        setFlightDateEnd(event.target.value)
-    }
+    const handleFlightDateStart = (event: any) => setFlightDateStart(event.target.value);
+    const handleFlightDateEnd = (event: any) => setFlightDateEnd(event.target.value);
 
-    const handleLoadCapacityStart = (event: any) => {
-        setLoadCapacityStart(event.target.value);
-        console.log(loadCapacityStart);
-    }
+    const handleLoadCapacityStart = (event: any) => setLoadCapacityStart(event.target.value);
+    const handleLoadCapacityEnd = (event: any) => setLoadCapacityEnd(event.target.value);
 
-    const handleLoadCapacityEnd = (event: any) => {
-        setLoadCapacityEnd(event.target.value);
+    const handleFindBtnClick = () => {
+        setLoadCapStart(loadCapacityStart);
+        setLoadCapEnd(loadCapacityEnd);
+        setFlDateStart(flightDateStart);
+        setFlDateEnd(flightDateEnd);
+        setSpaceSatValue(spaceSatellite);
+        getPayloadList(spaceSatellite, loadCapacityStart, loadCapacityEnd, flightDateStart, flightDateEnd);
     }
 
     return (
@@ -120,9 +76,8 @@ const PayloadsPage: FC<Props> = ({ changeBreadcrump }) => {
                     <input
                     className="input_search"
                     placeholder="Введите название КА"
-                    defaultValue=""
                     value={ spaceSatellite }
-                    onChange={(event => setSpaceSatellite(event.target.value))}
+                    onChange={ handleSpaceSatellite }
                     />
                 </div>
                 <div className="filter__container">
@@ -136,7 +91,6 @@ const PayloadsPage: FC<Props> = ({ changeBreadcrump }) => {
                             min={0}
                             max={500}
                             placeholder='0'
-                            defaultValue=""
                             value={ loadCapacityStart }
                             onChange={ handleLoadCapacityStart }
                             />
@@ -150,7 +104,6 @@ const PayloadsPage: FC<Props> = ({ changeBreadcrump }) => {
                             min={0}
                             max={500}
                             placeholder='500'
-                            defaultValue=""
                             value={ loadCapacityEnd }
                             onChange={ handleLoadCapacityEnd }
                             />
@@ -164,7 +117,6 @@ const PayloadsPage: FC<Props> = ({ changeBreadcrump }) => {
                             <input 
                             className="input_search" 
                             type="datetime-local" 
-                            defaultValue="" 
                             value={ String(flightDateStart) } 
                             onChange={ handleFlightDateStart }/>
                         </div>
@@ -173,7 +125,6 @@ const PayloadsPage: FC<Props> = ({ changeBreadcrump }) => {
                             <input 
                             className="input_search" 
                             type="datetime-local" 
-                            defaultValue=""
                             value={ String(flightDateEnd) }
                             onChange={ handleFlightDateEnd }/>
                         </div>
@@ -182,16 +133,22 @@ const PayloadsPage: FC<Props> = ({ changeBreadcrump }) => {
                 <div 
                     className="btn_find" 
                     aria-disabled={ !loading }
-                    onClick={() => setSearchFlag(!searchFlag)}>
+                    onClick={ handleFindBtnClick }>
                     Найти
                 </div>
             </div>
            
             {payloads && payloads.length > 0 ?
                 <div className="card_container">
-                    {payloads.map((value, id) => (
-                        <PayloadCard data={value} key={id}></PayloadCard>
-                    ))}
+                    {payloads.map((value, id) => {
+                        let isInDraft = false;
+                        payloadsInDraft.forEach((item) => {
+                            if (item.payload_id === value.payload_id) {
+                                isInDraft = true;
+                            }
+                        })
+                        return (<PayloadCard data={value} key={id} isInDraft = { isInDraft } setDraftID = { setDraftID }></PayloadCard>);
+                    })}
                 </div> :
                 <div style={{textAlign: 'center', padding: '3em 0 3em 0'}}>
                     <h1>Ничего не найдено</h1>

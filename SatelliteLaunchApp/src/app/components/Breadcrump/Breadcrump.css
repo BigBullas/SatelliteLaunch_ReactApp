@@ -1,8 +1,6 @@
 .breadcrump_container {
 	display: flex; 
 	justify-content: start;
-    padding-top: 1.5em;
-    padding-bottom: 1.5em;
 }
 
 .breadcrump__item {
@@ -19,5 +17,4 @@
 	height: 1.5em;
 	margin-right: 0.5em;
 	background-color: red;
-    margin-left: 1.5em;
 }

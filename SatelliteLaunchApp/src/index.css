@@ -26,3 +26,9 @@ a {
 .text_desc {
 	font-family: 'Montserrat', sans-serif;
 }
+
+.breadcrumb_and_draft_btn_container {
+	display: flex; 
+	justify-content: space-between;
+	padding: 1.5em;
+}

@@ -1,7 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { useSelector } from 'react-redux'
 
-const initialState = {
+type State = {
+    spaceSatellite: string,
+    loadCapacityStart: number | string,
+    loadCapacityEnd: number | string,
+    flightDateStart: Date | string,
+    flightDateEnd: Date | string,
+}
+
+const initialState: State = {
     spaceSatellite: '',
     loadCapacityStart: 0,
     loadCapacityEnd: 500,
@@ -27,7 +35,7 @@ const dataSlice = createSlice({
     },
     setFlightDateEndData(state, action) {
         state.Data.flightDateEnd = action.payload
-    },
+    }
   },
 })
 

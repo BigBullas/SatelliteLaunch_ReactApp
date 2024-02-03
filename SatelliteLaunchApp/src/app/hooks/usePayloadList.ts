@@ -4,40 +4,40 @@ import { setSpaceSatelliteData, setLoadCapacityStartData,
     setLoadCapacityEndData, setFlightDateStartData, setFlightDateEndData } from '../store/slices/payloadsFilterSlice';
 
 export function usePayloadList() {
-	const loadCapacityStart = useSelector((state: RootState) => state.payloadFilter.Data.loadCapacityStart);
-	const loadCapacityEnd = useSelector((state: RootState) => state.payloadFilter.Data.loadCapacityEnd);
-	const flightDateStart = useSelector((state: RootState) => state.payloadFilter.Data.flightDateStart);
-	const flightDateEnd = useSelector((state: RootState) => state.payloadFilter.Data.flightDateEnd);
-	const spaceSatellite = useSelector((state: RootState) => state.payloadFilter.Data.spaceSatellite);
+	const loadCapStart: number | string = useSelector((state: RootState) => state.payloadFilter.Data.loadCapacityStart);
+	const loadCapEnd: number | string = useSelector((state: RootState) => state.payloadFilter.Data.loadCapacityEnd);
+	const flDateStart: Date | string = useSelector((state: RootState) => state.payloadFilter.Data.flightDateStart);
+	const flDateEnd: Date | string = useSelector((state: RootState) => state.payloadFilter.Data.flightDateEnd);
+	const spaceSatValue: string = useSelector((state: RootState) => state.payloadFilter.Data.spaceSatellite);
 
 	const dispatch = useDispatch();
 
-	const setLoadCapacityStart = (value: number) => {
+	const setLoadCapStart = (value: number | string) => {
 		dispatch(setLoadCapacityStartData(value));
 	}
-	const setLoadCapacityEnd = (value: number) => {
+	const setLoadCapEnd = (value: number | string) => {
 		dispatch(setLoadCapacityEndData(value));
 	}
-	const setFlightDateStart = (value: string) => {
+	const setFlDateStart = (value: string | Date) => {
 		dispatch(setFlightDateStartData(value));
 	}
-	const setFlightDateEnd = (value: number) => {
+	const setFlDateEnd = (value: string | Date) => {
 		dispatch(setFlightDateEndData(value));
 	}
-	const setSearchName = (value: string) => {
+	const setSpaceSatValue = (value: string) => {
 		dispatch(setSpaceSatelliteData(value));
 	}
 
 	return {
-		loadCapacityStart,
-		loadCapacityEnd,
-		flightDateStart,
-		flightDateEnd,
-		spaceSatellite,
-		setLoadCapacityStart,
-		setLoadCapacityEnd,
-		setFlightDateStart,
-		setFlightDateEnd,
-		setSearchName,
+		loadCapStart,
+		loadCapEnd,
+		flDateStart,
+		flDateEnd,
+		spaceSatValue,
+		setLoadCapStart,
+		setLoadCapEnd,
+		setFlDateStart,
+		setFlDateEnd,
+		setSpaceSatValue,
 	}
 }
