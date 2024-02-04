@@ -31,7 +31,7 @@ const PayloadsPage: FC<Props> = ({ payloads, changeBreadcrump, getPayloadList, l
             getPayloadsFromDraft();
         }
         changeBreadcrump('', '');
-    }, [])
+    }, [draftID])
 
     const getPayloadsFromDraft = async () => {
         if (typeof(draftID) === 'number' && draftID) {
@@ -41,7 +41,7 @@ const PayloadsPage: FC<Props> = ({ payloads, changeBreadcrump, getPayloadList, l
                 // @ts-ignore
                 const { payloads: receivedPayloadsInDraft } = response.data;
         
-                console.log("data: ", response.data, receivedPayloadsInDraft);
+                console.log("data List: ", response.data, receivedPayloadsInDraft);
                 setPayloadsInDraft(receivedPayloadsInDraft);
         
             } catch (error) {
@@ -141,13 +141,7 @@ const PayloadsPage: FC<Props> = ({ payloads, changeBreadcrump, getPayloadList, l
             {payloads && payloads.length > 0 ?
                 <div className="card_container">
                     {payloads.map((value, id) => {
-                        let isInDraft = false;
-                        payloadsInDraft.forEach((item) => {
-                            if (item.payload_id === value.payload_id) {
-                                isInDraft = true;
-                            }
-                        })
-                        return (<PayloadCard data={value} key={id} isInDraft = { isInDraft } setDraftID = { setDraftID }></PayloadCard>);
+                        return (<PayloadCard data={value} key={id} payloadsInDraft = { payloadsInDraft } setDraftID = { setDraftID }></PayloadCard>);
                     })}
                 </div> :
                 <div style={{textAlign: 'center', padding: '3em 0 3em 0'}}>

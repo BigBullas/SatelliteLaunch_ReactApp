@@ -11,7 +11,7 @@
 }
 
 .btn-draft__disabled {
-    border: 1px solid #f0f0f0;
+    border: 1px solid white;
     border-radius: 5px;
 
     padding: 7px;
@@ -19,6 +19,6 @@
     padding-right: 10px;
 
     text-align: center;
-    /* cursor: pointer; */
+    cursor: default;
     color: #6c757d;
 }

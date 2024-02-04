@@ -10,6 +10,9 @@ import payloadsMock from './mocks/payloads';
 import { dateComparison } from './utils';
 import { api } from './api'
 import BtnDraftFlight from './components/BtnDraftFlight/BtnDraftFlight'
+import AuthPage from './pages/AuthPage'
+import RegPage from './pages/RegPage'
+import ContainerUnderHeader from './components/ContainerUnderHeader/ContainerUnderHeader'
 
 const App: React.FC = () => {
   const [draftID, setDraftID] = useState(0);
@@ -41,7 +44,7 @@ const App: React.FC = () => {
         setPayloads(receivedPayloads);
         setDraftID(draftRocketFlightId);
         
-        console.log("draftID: ", draftID)
+        console.log("draftID: ", draftID, draftRocketFlightId)
 
       } catch (error) {
           console.log("Error: ", error);
@@ -67,15 +70,17 @@ const App: React.FC = () => {
   return (
     <BrowserRouter>
       <Header />
-      <div className='breadcrumb_and_draft_btn_container'>
-        <Breadcrump desc={ desc } path= { path } />
-        <BtnDraftFlight draftID = { draftID }></BtnDraftFlight>
-      </div>
+      <ContainerUnderHeader desc={ desc } path={ path } draftID={ draftID }/>
       
       <Routes>
         <Route path="/" element={<PayloadsPage changeBreadcrump = {changeBreadcrump} payloads={ payloads }
          loading = { loading } getPayloadList={ getPayloadList } draftID = { draftID } setDraftID = { setDraftID }/>} />
-        <Route path="/payloads/:id" element={<SinglePayloadPage changeBreadcrump = {changeBreadcrump} />} />
+        <Route path="/payloads/:id" element = {<SinglePayloadPage changeBreadcrump = {changeBreadcrump} />} />
+        <Route path="/rocket_flights" element = { <h1>RocketFlightList</h1> }/>
+        <Route path="/rocket_flights/:id" element = { <h1>SingleRocketFlight</h1> }/>
+        <Route path="/auth" element = { <AuthPage changeBreadcrump = {changeBreadcrump}/> }/>
+        <Route path="/reg" element = { <RegPage  changeBreadcrump = {changeBreadcrump}/> }/>
+        <Route path="/profile" element = { <h1>Profile</h1> }/>
       </Routes>
     </BrowserRouter>
   )

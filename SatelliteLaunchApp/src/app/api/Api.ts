@@ -63,6 +63,7 @@ export interface ModelsUserLogin {
 }
 
 export interface ModelsUserSignUp {
+  email?: string;
   /** @maxLength 64 */
   login: string;
   /**
@@ -225,6 +226,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<ModelsUser, string>({
         path: `/check-auth`,
         method: "GET",
+        withCredentials: true,
         type: ContentType.Json,
         format: "json",
         ...params,
@@ -243,6 +245,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<string, any>({
         path: `/flights_payloads/payload/${id}`,
         method: "DELETE",
+        withCredentials: true,
         type: ContentType.Json,
         format: "json",
         ...params,
@@ -260,6 +263,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<string, any>({
         path: `/flights_payloads/payload/${id}/count/${count}`,
         method: "PUT",
+        withCredentials: true,
         type: ContentType.Json,
         format: "json",
         ...params,
@@ -278,6 +282,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<void, void>({
         path: `/logout`,
         method: "POST",
+        withCredentials: true,
         type: ContentType.Json,
         ...params,
       }),
@@ -309,6 +314,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<ModelsPayload[], any>({
         path: `/payloads`,
         method: "GET",
+        withCredentials: true,
         query: query,
         type: ContentType.Json,
         format: "json",
@@ -350,6 +356,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<string, any>({
         path: `/payloads`,
         method: "POST",
+        withCredentials: true,
         body: data,
         type: ContentType.FormData,
         format: "json",
@@ -364,11 +371,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @summary Add Payload to Flight
      * @request POST:/payloads/rocket_flight
      */
-    rocketFlightCreate: (payload: number, params: RequestParams = {}) =>
+    rocketFlightCreate: (
+      query: {
+        payload: number;
+      },
+      params: RequestParams = {}) =>
       this.request<number, any>({
         path: `/payloads/rocket_flight`,
         method: "POST",
-        body: payload,
+        withCredentials: true,
+        body: query,
         type: ContentType.Json,
         format: "json",
         ...params,
@@ -386,6 +398,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<ModelsPayload, any>({
         path: `/payloads/${id}`,
         method: "GET",
+        withCredentials: true,
         type: ContentType.Json,
         format: "json",
         ...params,
@@ -424,6 +437,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<string, any>({
         path: `/payloads/${id}`,
         method: "PUT",
+        withCredentials: true,
         body: data,
         type: ContentType.FormData,
         format: "json",
@@ -442,6 +456,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<string, any>({
         path: `/payloads/${id}`,
         method: "DELETE",
+        withCredentials: true,
         type: ContentType.Json,
         format: "json",
         ...params,
@@ -460,6 +475,28 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<Record<string, any>, any>({
         path: `/ping`,
         method: "GET",
+        format: "json",
+        ...params,
+      }),
+  };
+  profile = {
+    /**
+     * @description Update the profile of the currently logged-in user. Allows changing login, password, and email.
+     *
+     * @tags Authentication
+     * @name ProfileUpdate
+     * @summary Update Profile
+     * @request PUT:/profile
+     * @secure
+     */
+    profileUpdate: (user: ModelsUserSignUp, params: RequestParams = {}) =>
+      this.request<Record<string, any>, Record<string, any>>({
+        path: `/profile`,
+        method: "PUT",
+        withCredentials: true,
+        body: user,
+        secure: true,
+        type: ContentType.Json,
         format: "json",
         ...params,
       }),
@@ -487,6 +524,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<ModelsRocketFlight[][], any>({
         path: `/rocket_flights`,
         method: "GET",
+        withCredentials: true,
         query: query,
         type: ContentType.Json,
         format: "json",
@@ -505,6 +543,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<string, any>({
         path: `/rocket_flights`,
         method: "PUT",
+        withCredentials: true,
         body: flightDetails,
         type: ContentType.Json,
         format: "json",
@@ -523,6 +562,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<string, any>({
         path: `/rocket_flights`,
         method: "DELETE",
+        withCredentials: true,
         type: ContentType.Json,
         format: "json",
         ...params,
@@ -540,6 +580,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<string, any>({
         path: `/rocket_flights/form`,
         method: "POST",
+        withCredentials: true,
         body: flightStatus,
         type: ContentType.Json,
         format: "json",
@@ -558,6 +599,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<ModelsPayload[], any>({
         path: `/rocket_flights/${id}`,
         method: "GET",
+        withCredentials: true,
         type: ContentType.Json,
         format: "json",
         ...params,
@@ -575,6 +617,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<string, any>({
         path: `/rocket_flights/${id}/response`,
         method: "PUT",
+        withCredentials: true,
         body: flightStatus,
         type: ContentType.Json,
         format: "json",
@@ -594,25 +637,27 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<Record<string, any>, any>({
         path: `/sign_in`,
         method: "POST",
+        withCredentials: true,
         body: user,
         type: ContentType.Json,
         format: "json",
         ...params,
       }),
   };
-  signUp = {
+  signup = {
     /**
-     * @description Creates a new user account
+     * @description Register a new user account. The user will receive a JWT token upon successful registration.
      *
      * @tags Authentication
-     * @name SignUpCreate
+     * @name SignupCreate
      * @summary Sign up a new user
      * @request POST:/sign_up
      */
-    signUpCreate: (user: ModelsUserSignUp, params: RequestParams = {}) =>
-      this.request<Record<string, any>, any>({
+    signupCreate: (user: ModelsUserSignUp, params: RequestParams = {}) =>
+      this.request<Record<string, any>, Record<string, any>>({
         path: `/sign_up`,
         method: "POST",
+        withCredentials: true,
         body: user,
         type: ContentType.Json,
         format: "json",

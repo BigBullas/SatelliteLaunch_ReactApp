@@ -13,7 +13,7 @@ type State = {
 
 export const useUser = () => {
 	const { Data, isAuthorized } = useSelector((state: RootState) => state.user );
-	const { user_id, login, email, password, is_admin } = Data;
+	const { user_id, login, email, is_admin } = Data;
 	const dispatch = useDispatch();
 
 	const setUser = (value: State) => {
@@ -31,7 +31,6 @@ export const useUser = () => {
 			const Data: UserType = {
 				user_id: response.data["userId"],
 				login: response.data["login"],
-				email: response.data["email"],
 				is_admin: response.data["is_admin"],
 			}
 			const user: State = {
@@ -53,7 +52,6 @@ export const useUser = () => {
 		user_id,
 		login,
 		email,
-		password,
 		isAuthorized,
 		is_admin,
 		setUser,

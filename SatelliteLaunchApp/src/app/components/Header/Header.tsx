@@ -1,8 +1,12 @@
 import { FC } from 'react'
 import './Header.css'
 import { Link } from 'react-router-dom';
+import { useUser } from '../../hooks/useUser';
 
-const Header: FC = () => (
+const Header: FC = () => {
+    const { login, isAuthorized, is_admin } = useUser();
+
+    return (
     <div className="header">
         <header className='text_desc'>
             <div className="header-icon_container">
@@ -10,12 +14,37 @@ const Header: FC = () => (
                 <div>Роскосмос</div>
             </div>
             <div className="header-navbar_container">
-                {/* <div>Запросы на полёт</div> */}
                 <Link to="/">Космические аппараты</Link>
+
+                {isAuthorized && !is_admin &&
+                    (
+                        <>
+                            <Link to="/rocket_flights">Мои заявки</Link>
+                        </>
+                    )
+                }
+
+                {is_admin &&
+                    (
+                        <>
+                            <Link to="/rocket_flights">Планируемые полёты</Link>
+                            <Link to="/">Модерация КА</Link>
+                        </>
+                    )
+                }
             </div>
             <div className="header-user_container">
-                <div>Войти</div>
-                <div>Регистрация</div>
+                {isAuthorized ?
+                    (<Link to="/profile">{ login }</Link>)
+                :
+                    (
+                    <>
+                        <Link to="/auth">Войти</Link>
+                        <Link to="/reg">Регистрация</Link>
+                    </>
+                    )
+            }
+                
             </div>
         </header>
 
@@ -27,6 +56,7 @@ const Header: FC = () => (
             Один из самых масштабных проектов России ХХI века
         </div>
      </div>
-)
+    )
+}
 
 export default Header;

@@ -2,10 +2,10 @@ import { createSlice } from '@reduxjs/toolkit'
 
 
 const initialState = {
-    flight_id: -1,
-    creator_id: -1,
+    flight_id: 0,
+    creator_id: 0,
     creator_login: '',
-    moderator_id: -1,
+    moderator_id: 0,
     moderator_login: '',
     status: '',
     created_at: '',

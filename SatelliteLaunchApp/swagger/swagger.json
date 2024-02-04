@@ -515,6 +515,60 @@
                 }
             }
         },
+        "/profile": {
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Update the profile of the currently logged-in user. Allows changing login, password, and email.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Update Profile",
+                "parameters": [
+                    {
+                        "description": "Updated user profile data",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.UserSignUp"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Profile updated successfully",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
         "/rocket_flights": {
             "get": {
                 "description": "Retrieve a list of rocket flights based on the provided query parameters.",
@@ -822,9 +876,9 @@
                 }
             }
         },
-        "/sign_up": {
+        "/signup": {
             "post": {
-                "description": "Creates a new user account",
+                "description": "Register a new user account. The user will receive a JWT token upon successful registration.",
                 "consumes": [
                     "application/json"
                 ],
@@ -837,7 +891,7 @@
                 "summary": "Sign up a new user",
                 "parameters": [
                     {
-                        "description": "User information",
+                        "description": "User sign up data",
                         "name": "user",
                         "in": "body",
                         "required": true,
@@ -848,23 +902,25 @@
                 ],
                 "responses": {
                     "201": {
-                        "description": "Created",
+                        "description": "User successfully registered",
                         "schema": {
                             "type": "object",
                             "additionalProperties": true
                         }
                     },
                     "400": {
-                        "description": "Bad Request",
-                        "schema": {}
-                    },
-                    "409": {
-                        "description": "Conflict",
-                        "schema": {}
+                        "description": "Bad request error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
                     },
                     "500": {
-                        "description": "Internal Server Error",
-                        "schema": {}
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
                     }
                 }
             }
@@ -1005,6 +1061,9 @@
                 "password"
             ],
             "properties": {
+                "email": {
+                    "type": "string"
+                },
                 "login": {
                     "type": "string",
                     "maxLength": 64

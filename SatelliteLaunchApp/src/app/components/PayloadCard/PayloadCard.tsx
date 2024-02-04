@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import './PayloadCard.css';
 import defaultImage from '../../assets/default_image.jpg';
 
@@ -10,19 +10,27 @@ import { useUser } from '../../hooks/useUser';
 
 type Props = {
     data: PayloadCardType
-    isInDraft: boolean
+    payloadsInDraft: PayloadCardType[]
     setDraftID: Function
 }
 
-const PayloadCard: FC<Props> = ({ data, isInDraft: isInDraftProp, setDraftID }) => {
-    const [isInDraft, setIsInDraft] = useState<boolean>(isInDraftProp);
+const PayloadCard: FC<Props> = ({ data, payloadsInDraft, setDraftID }) => {
+    const [isInDraft, setIsInDraft] = useState<boolean>(false);
+
+    useEffect(() => {
+        payloadsInDraft.forEach((item) => {
+            if (item.payload_id === data.payload_id) {
+                setIsInDraft(true);
+            }
+        })
+    }, [payloadsInDraft.length])
 
     const { isAuthorized } = useUser();
 
     const handleBtnAddClick = async (event: any) => {
         event.preventDefault();
         try {
-            const response = await api.payloads.rocketFlightCreate(event.target.id)
+            const response = await api.payloads.rocketFlightCreate({ payload: event.target.id })
             setDraftID(response.data);
             setIsInDraft(true);
 

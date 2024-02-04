@@ -1,26 +1,24 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    user_id: -1,
+    user_id: 0,
     login: '',
     email: '',
-    password: '',
     is_admin: false,
 }
 
 const dataSlice = createSlice({
   name: 'user',
-  initialState: { Data: initialState, isAuthorized: true},
+  initialState: { Data: initialState, isAuthorized: false},
   reducers: {
     setData(state, { payload }) {
       state.Data = payload.Data;
       state.isAuthorized = payload.isAuthorized;
     },
     cleanUser: (state) => {
-        state.Data.user_id = -1;
+        state.Data.user_id = 0;
         state.Data.login = '';
         state.Data.email = '';
-        state.Data.password = '';
         state.isAuthorized = false;
         state.Data.is_admin = false;
     }
@@ -31,4 +29,4 @@ export const { setData: setUserDataAction, cleanUser: cleanUserDataAction } = da
 
 export default dataSlice.reducer
 
-// TODO: поменять 13 строчку на это: initialState: { Data: initialState, isAuthorized: false},
+// : поменять 13 строчку на это: initialState: { Data: initialState, isAuthorized: false},
