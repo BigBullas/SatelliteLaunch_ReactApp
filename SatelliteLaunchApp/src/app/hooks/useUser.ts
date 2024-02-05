@@ -31,6 +31,7 @@ export const useUser = () => {
 			const Data: UserType = {
 				user_id: response.data["userId"],
 				login: response.data["login"],
+				email: response.data["email"],
 				is_admin: response.data["is_admin"],
 			}
 			const user: State = {

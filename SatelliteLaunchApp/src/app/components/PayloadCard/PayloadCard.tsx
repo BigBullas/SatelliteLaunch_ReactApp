@@ -30,7 +30,8 @@ const PayloadCard: FC<Props> = ({ data, payloadsInDraft, setDraftID }) => {
     const handleBtnAddClick = async (event: any) => {
         event.preventDefault();
         try {
-            const response = await api.payloads.rocketFlightCreate({ payload: event.target.id })
+            console.log("event.target.id: ", event.target.id);
+            const response = await api.payloads.rocketFlightCreate(Number(event.target.id))
             setDraftID(response.data);
             setIsInDraft(true);
 

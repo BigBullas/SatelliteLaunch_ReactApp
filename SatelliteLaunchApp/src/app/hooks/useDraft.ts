@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/types';
-import { setDraftDataAction } from '../store/slices/draftSlice';
+import { setDraftDataAction, cleanDraftDataAction, setDraftIdDataAction } from '../store/slices/draftSlice';
 import { RocketFlightType } from '../types'
 
 type State = {
@@ -19,6 +19,14 @@ export function useDraft() {
 		dispatch(setDraftDataAction(value.draftInfo.Data));
 	}
 
+	const resetDraft = () => {
+		dispatch(cleanDraftDataAction());
+	}
+
+	const setDraftId = (draft_id: number) => {
+		dispatch(setDraftIdDataAction(draft_id));
+	}
+
 	const hasDraft = () => useSelector((state: State) => state.draftInfo.Data?.flight_id !== -1 || !state.draftInfo.Data)
 
 	return {
@@ -27,5 +35,7 @@ export function useDraft() {
 		flight_date, load_capacity, price, title, place_number,
 		setDraft,
 		hasDraft,
+		resetDraft,
+		setDraftId
 	}
 }

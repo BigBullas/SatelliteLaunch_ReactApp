@@ -4,6 +4,7 @@ import './PayloadsPage.css';
 import { PayloadCardType } from '../../types';
 import { usePayloadList } from '../../hooks/usePayloadList'
 import { api } from '../../api';
+import { useUser } from '../../hooks/useUser';
 
 type Props = {
     payloads: PayloadCardType[]
@@ -17,6 +18,7 @@ type Props = {
 const PayloadsPage: FC<Props> = ({ payloads, changeBreadcrump, getPayloadList, loading, draftID, setDraftID }) => {
     const { loadCapStart, loadCapEnd, flDateStart, flDateEnd, spaceSatValue, 
         setLoadCapStart, setLoadCapEnd, setFlDateStart, setFlDateEnd, setSpaceSatValue } = usePayloadList();
+    const { isAuthorized } = useUser();
 
     const [spaceSatellite, setSpaceSatellite] = useState<string>(spaceSatValue);
     const [loadCapacityStart, setLoadCapacityStart] = useState<number | string>(loadCapStart);
@@ -34,7 +36,7 @@ const PayloadsPage: FC<Props> = ({ payloads, changeBreadcrump, getPayloadList, l
     }, [draftID])
 
     const getPayloadsFromDraft = async () => {
-        if (typeof(draftID) === 'number' && draftID) {
+        if (typeof(draftID) === 'number' && draftID && isAuthorized) {
             try {
                 const response = await api.rocketFlights.rocketFlightsDetail(draftID);
         

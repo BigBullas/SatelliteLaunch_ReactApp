@@ -369,18 +369,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @tags Payloads
      * @name RocketFlightCreate
      * @summary Add Payload to Flight
-     * @request POST:/payloads/rocket_flight
+     * @request POST:/payloads/rocket_flight/{payload}
      */
-    rocketFlightCreate: (
-      query: {
-        payload: number;
-      },
-      params: RequestParams = {}) =>
+    rocketFlightCreate: (payload: number, params: RequestParams = {}) =>
       this.request<number, any>({
-        path: `/payloads/rocket_flight`,
+        path: `/payloads/rocket_flight/${payload}`,
         method: "POST",
         withCredentials: true,
-        body: query,
+        // body: query,
         type: ContentType.Json,
         format: "json",
         ...params,

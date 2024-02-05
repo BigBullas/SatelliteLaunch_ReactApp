@@ -11,6 +11,7 @@ import { api } from './api'
 import AuthPage from './pages/AuthPage'
 import RegPage from './pages/RegPage'
 import ContainerUnderHeader from './components/ContainerUnderHeader/ContainerUnderHeader'
+import ProfilePage from './pages/ProfilePage'
 
 const App: React.FC = () => {
   const [draftID, setDraftID] = useState(0);
@@ -78,7 +79,7 @@ const App: React.FC = () => {
         <Route path="/rocket_flights/:id" element = { <h1>SingleRocketFlight</h1> }/>
         <Route path="/auth" element = { <AuthPage changeBreadcrump = {changeBreadcrump}/> }/>
         <Route path="/reg" element = { <RegPage  changeBreadcrump = {changeBreadcrump}/> }/>
-        <Route path="/profile" element = { <h1>Profile</h1> }/>
+        <Route path="/profile" element = { <ProfilePage changeBreadcrump={changeBreadcrump} draftID = { draftID }/>}/>
       </Routes>
     </BrowserRouter>
   )
