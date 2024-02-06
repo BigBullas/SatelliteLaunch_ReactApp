@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import './Breadcrump.css'
 
 type Props = {
-    desc: string,
-    path: string
+    desc: string | string[],
+    path: string | string[]
 }
 const Breadcrump: FC<Props> = ({desc, path}) => (
     <div className="breadcrump_container">
@@ -12,17 +12,36 @@ const Breadcrump: FC<Props> = ({desc, path}) => (
 
         <Link to="/" className="breadcrump__item breadcrump__part">Космические аппараты</Link>
 
-        {desc ?
-        <Link to={`/${path}`} className="breadcrump__item">
-            <div className="breadcrump__part"> -&gt; </div>
-            <div className="breadcrump__part">{desc}</div>
-        </Link>
-        : path &&
-        <Link to={`/${path}`} className="breadcrump__item">
-            <div className="breadcrump__part"> -&gt; </div>
-            <div className="breadcrump__part">{path}</div>
-        </Link>
+        {typeof(desc) === 'string' ? (
+                <>
+                    {desc ?
+                        <Link to={`/${path}`} className="breadcrump__item">
+                            <div className="breadcrump__part"> -&gt; </div>
+                            <div className="breadcrump__part">{desc}</div>
+                        </Link>
+                        : path &&
+                        <Link to={`/${path}`} className="breadcrump__item">
+                            <div className="breadcrump__part"> -&gt; </div>
+                            <div className="breadcrump__part">{path}</div>
+                        </Link>
+                    }
+                </>
+            ) : (
+                <>
+                    {desc.map((item, id) => {
+                        return (
+                            <Link to={`/${path[id]}`} className="breadcrump__item" key={ id }>
+                                <div className="breadcrump__part"> -&gt; </div>
+                                <div className="breadcrump__part">{item}</div>
+                            </Link>
+                        );
+                    })
+                }
+                </>
+            )
         }
+
+
   </div>
 )
 

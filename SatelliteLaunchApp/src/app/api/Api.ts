@@ -20,6 +20,7 @@ export interface ModelsPayload {
   load_capacity?: number;
   payload_id?: number;
   title?: string;
+  count?: number;
 }
 
 export interface ModelsRocketFlight {
@@ -517,7 +518,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       },
       params: RequestParams = {},
     ) =>
-      this.request<ModelsRocketFlight[][], any>({
+      this.request<ModelsRocketFlight[], any>({
         path: `/rocket_flights`,
         method: "GET",
         withCredentials: true,

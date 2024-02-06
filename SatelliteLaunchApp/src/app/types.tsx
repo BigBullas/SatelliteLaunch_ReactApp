@@ -1,4 +1,4 @@
-export type FlightStatusType = 'черновик' | 'удален' | 'сформирован' | 'утвержден' | 'отклонен'
+// export type FlightStatusType = 'черновик' | 'удален' | 'сформирован' | 'утвержден' | 'отклонен'
 
 export type PayloadCardType = {
     payload_id: number
@@ -19,12 +19,11 @@ export type RocketFlightType = {
     creator_login?: string
     moderator_id?: number
     moderator_login?: string
-    status?: FlightStatusType
+    status?: string
     created_at?: Date
     formed_at?: Date
     confirmed_at?: Date
     flight_date?: Date
-    load_capacity?: number
     price?: number
     title?: string
     place_number?: number

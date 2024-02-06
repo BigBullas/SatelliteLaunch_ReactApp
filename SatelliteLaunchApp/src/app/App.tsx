@@ -12,6 +12,8 @@ import AuthPage from './pages/AuthPage'
 import RegPage from './pages/RegPage'
 import ContainerUnderHeader from './components/ContainerUnderHeader/ContainerUnderHeader'
 import ProfilePage from './pages/ProfilePage'
+import FlightsPage from './pages/FlightsPage'
+import SingleFlightPage from './pages/SingleFlightPage'
 
 const App: React.FC = () => {
   const [draftID, setDraftID] = useState(0);
@@ -75,8 +77,8 @@ const App: React.FC = () => {
         <Route path="/" element={<PayloadsPage changeBreadcrump = {changeBreadcrump} payloads={ payloads }
          loading = { loading } getPayloadList={ getPayloadList } draftID = { draftID } setDraftID = { setDraftID }/>} />
         <Route path="/payloads/:id" element = {<SinglePayloadPage changeBreadcrump = {changeBreadcrump} />} />
-        <Route path="/rocket_flights" element = { <h1>RocketFlightList</h1> }/>
-        <Route path="/rocket_flights/:id" element = { <h1>SingleRocketFlight</h1> }/>
+        <Route path="/rocket_flights" element = { <FlightsPage changeBreadcrump={changeBreadcrump}/> }/>
+        <Route path="/rocket_flights/:id" element = { <SingleFlightPage changeBreadcrump={changeBreadcrump} draftId={draftID} setDraftId={ setDraftID }/> }/>
         <Route path="/auth" element = { <AuthPage changeBreadcrump = {changeBreadcrump}/> }/>
         <Route path="/reg" element = { <RegPage  changeBreadcrump = {changeBreadcrump}/> }/>
         <Route path="/profile" element = { <ProfilePage changeBreadcrump={changeBreadcrump} draftID = { draftID }/>}/>

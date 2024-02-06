@@ -19,7 +19,7 @@ const Header: FC = () => {
                 {isAuthorized && !is_admin &&
                     (
                         <>
-                            <Link to="/rocket_flights">Мои заявки</Link>
+                            <Link to="/rocket_flights">Мои полёты</Link>
                         </>
                     )
                 }

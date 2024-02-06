@@ -1,0 +1,20 @@
+.card_container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.5em;
+}
+
+.card_container th, .card_container td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.card_container tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.card_container th {
+    background-color: #9568cf;
+    color: white;
+}

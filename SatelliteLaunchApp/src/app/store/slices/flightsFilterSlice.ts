@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  status: [],
+  status: '',
+  title: '',
   startDate: '',
   endDate: '',
 }
@@ -10,6 +11,9 @@ const dataSlice = createSlice({
   name: 'flightsFilter',
   initialState: { Data: initialState },
   reducers: {
+    setSearchTitle (state, action) {
+      state.Data.title =  action.payload
+    },
     setStatusData(state, action) {
       state.Data.status = action.payload
     },
@@ -24,6 +28,7 @@ const dataSlice = createSlice({
 
 export const {
   setStatusData: setStatusDataAction,
+  setSearchTitle: setSearchTitleDataAction,
   setStartDateData: setStartDataAction,
   setEndDateData: setEndDataAction,
 } = dataSlice.actions
