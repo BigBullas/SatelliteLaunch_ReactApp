@@ -263,3 +263,7 @@ const SingleFlightPage: FC<Props> = ({changeBreadcrump, draftId, setDraftId}) =>
 }
 
 export default SingleFlightPage
+
+// TODO: при любом изменении черновика шлём Гет запрос этой заявки
+
+// TODO: исправить, чтобы можно было изменять только 1 поле (например, только название), сейчас с ошибкой

@@ -10,8 +10,6 @@ type Props = {
     changeBreadcrump: Function
 }
 
-// TODO: нужно ли менять breadcrumbs при переходе на SinglePayloadPage от SingleFlightPage? или вообще убрать переход?
-
 const SinglePayloadPage: FC<Props> = ({changeBreadcrump}) => {
     const { id } = useParams<string>();
     const [payload, setPayload] = useState<PayloadCardType>()

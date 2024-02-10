@@ -22,8 +22,10 @@ const rusStatus: { [key: string]: string } = {
 
 const FlightsPage: FC<Props> = ({ changeBreadcrump }) => {
     const { title, minDate, maxDate, status, setStartDateAction, setEndDateAction, setStatusDataAction, setTitleDataAction} = useFlightList();
-    const { isAuthorized } = useUser();
+    const { isAuthorized, is_admin } = useUser();
     const [loading, setLoading] = useState<boolean>(false);
+
+    const [errorStatusFLight, setErrorStatusFLight] = useState<string>(" ");
 
     const [statusFilter, setStatusFilter] = useState<string>(status ? status : 'Все');
     const [formDateStart, setFormDateStart] = useState<Date | string>(minDate);
@@ -33,8 +35,15 @@ const FlightsPage: FC<Props> = ({ changeBreadcrump }) => {
     const [rocketFlights, setRocketFlights] = useState<RocketFlightType[]>([])
 
     useEffect(() => {
+        is_admin ? changeBreadcrump('Планируемые полёты', 'rocket_flights') : changeBreadcrump('Мои полёты', 'rocket_flights');
+        console.log('timeout started');
         getRocketFlightList(statusFilter, formDateStart, formDateEnd, titleFilter);
-        changeBreadcrump('Мои полёты', 'rocket_flights');
+
+        const timeout = setInterval(() => {
+            console.log('timeout worked');
+            getRocketFlightList(statusFilter, formDateStart, formDateEnd, titleFilter);
+        }, 5000);
+        return () => clearInterval(timeout);
     }, [])
 
     const getRocketFlightList = async (statusValue: string, formDateStart: Date | string, formDateEnd: string | Date, titleFilter: string) => {
@@ -104,10 +113,62 @@ const FlightsPage: FC<Props> = ({ changeBreadcrump }) => {
         getRocketFlightList(statusFilter,  formDateStart, formDateEnd, titleFilter);
     }
 
+    const handleCompleteStatusClick = async (event: any) => {
+        event.preventDefault();
+        const flight_id = event.target.id;
+
+        console.log("flight_id: ", flight_id);
+
+        try {
+            const response = await api.rocketFlights.responseUpdate(flight_id, {status: "completed"});
+            
+            if (response.status == 200) {
+                setErrorStatusFLight("");
+                setRocketFlights(rocketFlights.map((value) => {
+                    if (value.flight_id === Number(flight_id)) {
+                        value.status = "completed";
+                    }
+                    return value;
+                }));
+            } else {
+                setErrorStatusFLight("Ошибка")
+            }
+
+            setTimeout(() => setErrorStatusFLight(" "), 3000);
+        } catch(error) {
+            console.log("Error in PayloadCard: ", error);
+        }   
+    }
+
+    const handleRejectStatusClick = async (event: any) => {
+        event.preventDefault();
+        const flight_id = event.target.id;
+
+        console.log("flight_id: ", flight_id);
+        
+        try {
+            const response = await api.rocketFlights.responseUpdate(flight_id, {status: "rejected"});
+            
+            if (response.status == 200) {
+                setErrorStatusFLight("");
+                setRocketFlights(rocketFlights.map((value) => {
+                    if (value.flight_id === Number(flight_id)) {
+                        value.status = "rejected";
+                    }
+                    return value;
+                }));
+            } else {
+                setErrorStatusFLight("Ошибка")
+            }
+
+            setTimeout(() => setErrorStatusFLight(" "), 3000);
+        } catch(error) {
+            console.log("Error in PayloadCard: ", error);
+        }
+    }
+
     return (
         <div className='payload_list_container'>
-            {loading && <h1>Загрузка</h1>}
-
             <div className="list-options">
                 <div style={{flexGrow: '2', display: 'flex' }}>
                     <select className="input_search" value={ statusFilter } onChange={ handleStatusFilter }>
@@ -160,7 +221,7 @@ const FlightsPage: FC<Props> = ({ changeBreadcrump }) => {
                             <tr>
                                 <th>№</th>
                                 <th>Название полёта</th>
-                                <th>Номер площадки</th>
+                                <th>№ площадки</th>
                                 <th>Дата полёта</th>
                                 <th>Дата формирования</th>
                                 <th>Статус</th>
@@ -175,7 +236,20 @@ const FlightsPage: FC<Props> = ({ changeBreadcrump }) => {
                                         <td><Link to={`/rocket_flights/${value.flight_id}`}>{dateConversion(value.flight_date)}</Link></td>
                                         <td><Link to={`/rocket_flights/${value.flight_id}`}>{dateConversion(value.formed_at)}</Link></td>
                                         {value.status ? (
-                                            <td><Link to={`/rocket_flights/${value.flight_id}`}>{rusStatus[value.status]}</Link></td>    
+                                            value.status === "formed" && is_admin ? (
+                                                <td>
+                                                    <div style={{display: 'flex', flexWrap: 'wrap'}}>
+                                                        <button className='btn_flight' id = { String(value.flight_id) } 
+                                                            onClick={ handleCompleteStatusClick }>Сохранить</button>
+                                                        <button className='btn_exit' id = { String(value.flight_id) }
+                                                            onClick={ handleRejectStatusClick }>Удалить</button>
+                                                    </div>
+                                                    <div className='error'>{ errorStatusFLight }</div>
+                                                    <div className='right'>{ errorStatusFLight === "" && "Успешно"}</div>
+                                                </td>    
+                                            ) : (
+                                                <td><Link to={`/rocket_flights/${value.flight_id}`}>{rusStatus[value.status]}</Link></td>    
+                                            ) 
                                         ) : (
                                             <td><Link to={`/rocket_flights/${value.flight_id}`}>{rusStatus["unknown"]}</Link></td>
                                         )}

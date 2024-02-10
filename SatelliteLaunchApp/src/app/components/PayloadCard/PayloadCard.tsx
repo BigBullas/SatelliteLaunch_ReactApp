@@ -36,7 +36,14 @@ const PayloadCard: FC<Props> = ({ data, payloadsInDraft, setDraftID, container, 
         event.preventDefault();
         try {
             console.log("event.target.id: ", event.target.id);
-            const response = await api.payloads.rocketFlightCreate(Number(event.target.id))
+            const response = await api.payloads.rocketFlightCreate(Number(event.target.id));
+            // if (response.status === 200) {
+            //     const  
+            // }
+
+            // TODO: подумать над тем, как убрать гет заявки и при этом отображать у карточек актуальное состояние (в заявке или нет)
+            // можно спрятать под гетом списка услуг и id черновика получение заявки с её услугами
+
             setDraftID(response.data);
             setIsInDraft(true);
 
