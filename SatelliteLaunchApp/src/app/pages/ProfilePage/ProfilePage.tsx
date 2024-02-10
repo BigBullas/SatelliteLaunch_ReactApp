@@ -8,9 +8,10 @@ import { useDraft } from '../../hooks/useDraft';
 type Props = {
     draftID: number | null | undefined,
     changeBreadcrump: Function,
+    setDraftID: Function
 }
 
-const ProfilePage: FC<Props> = ({ draftID, changeBreadcrump }) => {
+const ProfilePage: FC<Props> = ({ draftID, changeBreadcrump, setDraftID }) => {
     const { resetDraft } = useDraft();
     const { login, email, authorize, resetUser } = useUser();
     const [inputLogin, setInputLogin] = useState<string>(login);
@@ -53,6 +54,7 @@ const ProfilePage: FC<Props> = ({ draftID, changeBreadcrump }) => {
         if (resLogout.status === 200) {
             resetUser();
             resetDraft();
+            setDraftID(0);
             setIsLogoutError(false);
             
             navigate('/');

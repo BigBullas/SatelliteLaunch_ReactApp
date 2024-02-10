@@ -25,9 +25,9 @@ export const useUser = () => {
 	}
 
 	const authorize = async () => {
-		const response = await api.checkAuth.checkAuthList();
+		try {
+			const response = await api.checkAuth.checkAuthList();
 
-		if (response.status === 200) {
 			const Data: UserType = {
 				user_id: response.data["userId"],
 				login: response.data["login"],
@@ -42,9 +42,9 @@ export const useUser = () => {
 			}
 
 			setUser(user)
-
 			return true;
-		} else {
+		} catch (error) {
+			console.log("ErrorAuth: ", error);
 			return false;
 		}
 	}

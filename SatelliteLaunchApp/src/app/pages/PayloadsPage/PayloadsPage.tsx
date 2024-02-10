@@ -143,7 +143,8 @@ const PayloadsPage: FC<Props> = ({ payloads, changeBreadcrump, getPayloadList, l
             {payloads && payloads.length > 0 ?
                 <div className="card_container">
                     {payloads.map((value, id) => {
-                        return (<PayloadCard data={value} key={id} payloadsInDraft = { payloadsInDraft } setDraftID = { setDraftID }></PayloadCard>);
+                        return (<PayloadCard data={value} key={id} payloadsInDraft = { payloadsInDraft } deletePayloadCard={() => {}}
+                             setDraftID = { setDraftID } container='payloadList'></PayloadCard>);
                     })}
                 </div> :
                 <div style={{textAlign: 'center', padding: '3em 0 3em 0'}}>

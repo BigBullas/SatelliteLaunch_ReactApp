@@ -14,16 +14,26 @@ import ContainerUnderHeader from './components/ContainerUnderHeader/ContainerUnd
 import ProfilePage from './pages/ProfilePage'
 import FlightsPage from './pages/FlightsPage'
 import SingleFlightPage from './pages/SingleFlightPage'
+import { useUser } from './hooks/useUser'
 
 const App: React.FC = () => {
   const [draftID, setDraftID] = useState(0);
   const [payloads, setPayloads] = useState<PayloadCardType[]>([]);
   const { loadCapStart, loadCapEnd, flDateStart, flDateEnd, spaceSatValue } = usePayloadList();
+  const { authorize, resetUser } = useUser();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    chechAuthorize();
     getPayloadList(spaceSatValue, loadCapStart, loadCapEnd, flDateStart, flDateEnd);
   }, [])
+
+  const chechAuthorize = async () => {
+    let isAuth = await authorize();
+    if (!isAuth) {
+      resetUser();
+    }
+  }
 
   const getPayloadList = async (spaceSatValue: string, loadCapStart: string | number,
      loadCapEnd: string | number, flDateStart: Date | string, flDateEnd: string | Date) => {
@@ -68,6 +78,7 @@ const App: React.FC = () => {
     setDesc(newDesc);
     setPath(newPath);
   }
+  
   return (
     <BrowserRouter>
       <Header />
@@ -81,7 +92,7 @@ const App: React.FC = () => {
         <Route path="/rocket_flights/:id" element = { <SingleFlightPage changeBreadcrump={changeBreadcrump} draftId={draftID} setDraftId={ setDraftID }/> }/>
         <Route path="/auth" element = { <AuthPage changeBreadcrump = {changeBreadcrump}/> }/>
         <Route path="/reg" element = { <RegPage  changeBreadcrump = {changeBreadcrump}/> }/>
-        <Route path="/profile" element = { <ProfilePage changeBreadcrump={changeBreadcrump} draftID = { draftID }/>}/>
+        <Route path="/profile" element = { <ProfilePage changeBreadcrump={changeBreadcrump} draftID = { draftID } setDraftID = { setDraftID } />}/>
       </Routes>
     </BrowserRouter>
   )

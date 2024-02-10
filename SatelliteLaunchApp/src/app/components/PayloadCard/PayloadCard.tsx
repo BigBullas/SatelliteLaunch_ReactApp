@@ -12,10 +12,15 @@ type Props = {
     data: PayloadCardType
     payloadsInDraft: PayloadCardType[]
     setDraftID: Function
+    container: "payloadList" | "flightRequest" | "draftFlightRequest"
+    deletePayloadCard: Function
 }
 
-const PayloadCard: FC<Props> = ({ data, payloadsInDraft, setDraftID }) => {
+const PayloadCard: FC<Props> = ({ data, payloadsInDraft, setDraftID, container, deletePayloadCard }) => {
     const [isInDraft, setIsInDraft] = useState<boolean>(false);
+
+    const [count, setCount] = useState<number | undefined>(data.count)
+    const [errorCount, setErrorCount] = useState<string>(" ");
 
     useEffect(() => {
         payloadsInDraft.forEach((item) => {
@@ -42,6 +47,46 @@ const PayloadCard: FC<Props> = ({ data, payloadsInDraft, setDraftID }) => {
         }
         
         console.log("setDraftID, btnAddClick, payload_id: ", event.target.id);
+    }
+
+    const handleChangeCountClick = (event: any) => {
+        event.preventDefault();
+        setCount(Number(event.target.value));
+    }
+
+    const handleSaveCountClick = async (event: any) => {
+        event.preventDefault();
+        try {
+            const response = await api.flightsPayloads.payloadCountUpdate(data.payload_id, count || 1);
+            
+            if (response.status == 200) {
+                setErrorCount("");
+            } else {
+                setErrorCount("Ошибка, повторите изменение позже")
+            }
+
+            setTimeout(() => setErrorCount(" "), 3000);
+        } catch(error) {
+            console.log("Error in PayloadCard: ", error);
+        }    
+    }
+
+    const handleDeletePayloadClick = async (event: any) => {
+        event.preventDefault();
+        try {
+            const response = await api.flightsPayloads.payloadDelete(data.payload_id);
+            
+            if (response.status == 200) {
+                setErrorCount("");
+                deletePayloadCard(data.payload_id);
+            } else {
+                setErrorCount("Ошибка, повторите удаление позже")
+            }
+
+            setTimeout(() => setErrorCount(" "), 3000);
+        } catch(error) {
+            console.log("Error in PayloadCard: ", error);
+        }    
     }
     
     return (
@@ -71,14 +116,43 @@ const PayloadCard: FC<Props> = ({ data, payloadsInDraft, setDraftID }) => {
                         </div>
                     </div>
                     {isAuthorized && (
-                        <div className="card-btn_container">
-                            {isInDraft ? 
-                                (<button className='btn_add' id= { String(data.payload_id) } disabled={ true }>В заявке</button>)
-                                :
-                                (<button className='btn_add' id= { String(data.payload_id) } onClick={ handleBtnAddClick }>Добавить в заявку</button>)
-                            }
-                        </div>
+                        container === "payloadList" ? (
+                            <div className="card-btn_container">
+                                {isInDraft ? 
+                                    (<button className='btn_add' id= { String(data.payload_id) } disabled={ true }>В заявке</button>)
+                                    :
+                                    (<button className='btn_add' id= { String(data.payload_id) } onClick={ handleBtnAddClick }>Добавить в заявку</button>)
+                                }
+                            </div>
+                        ) : (
+                            container == "draftFlightRequest" ? (
+                                <div>
+                                {/* <div className="card-btn_container"> */}
+                                    <div>Количество</div>
+                                    <div>
+                                            <input
+                                            style={{padding: '0.5rem', border: '1px solid #ccc', borderRadius: '4px'}}
+                                            // className="input_flight"
+                                            type='number'
+                                            min={ 1 }
+                                            value={ count }
+                                            onChange={ handleChangeCountClick }
+                                            onClick={(event) => event.preventDefault()}
+                                            />
+                                    </div>
+                                    <button className='btn_flight' onClick={ handleSaveCountClick }>Сохранить</button>
+                                    <button className='btn_exit' onClick={ handleDeletePayloadClick }>Удалить</button>
+
+                                    <div className='error'>{ errorCount }</div>
+                                    <div className='right'>{ errorCount === "" && "Успешно"}</div>
+                                </div>
+                            ) : (
+                                <div className="card-btn_container">
+                                    Количество: { data.count }
+                                </div>
+                            )
                         )
+                    )
                     }
                 </div>
             </Link>

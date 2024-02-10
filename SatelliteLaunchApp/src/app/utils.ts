@@ -1,4 +1,4 @@
-export const dateConversion = (date: Date = new Date(), withTime: boolean = true): string => {
+export const dateConversion = (date?: string | Date, withTime: boolean = true): string => {
     if (date) {
         date = new Date(date);
     } else {
@@ -9,7 +9,6 @@ export const dateConversion = (date: Date = new Date(), withTime: boolean = true
     let minutes = date.getMinutes().toString();
     let seconds = date.getSeconds().toString();
     
-    // Добавляем ноль перед числами меньше 10 для корректного форматирования времени
     if (parseInt(hours) < 10) {
         hours = '0' + hours;
     }

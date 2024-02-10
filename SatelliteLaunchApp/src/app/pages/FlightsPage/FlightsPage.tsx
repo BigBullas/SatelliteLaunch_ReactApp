@@ -11,6 +11,15 @@ type Props = {
     changeBreadcrump: Function
 }
 
+const rusStatus: { [key: string]: string } = {
+    "formed": "Сформирован",
+    "draft": "Черновик",
+    "deleted": "Удален",
+    "completed": "Утвержден",
+    "rejected": "Отклонен",
+    "unknown": "-",
+}
+
 const FlightsPage: FC<Props> = ({ changeBreadcrump }) => {
     const { title, minDate, maxDate, status, setStartDateAction, setEndDateAction, setStatusDataAction, setTitleDataAction} = useFlightList();
     const { isAuthorized } = useUser();
@@ -44,7 +53,6 @@ const FlightsPage: FC<Props> = ({ changeBreadcrump }) => {
             let resRocketFlight: RocketFlightType = {};
 
             response.data.forEach((item) => {
-                console.log("item: ", item, resRocketFlight);
                 resRocketFlight.flight_id = item.flight_id;
 
                 resRocketFlight.creator_id = item.creator_id;
@@ -89,8 +97,6 @@ const FlightsPage: FC<Props> = ({ changeBreadcrump }) => {
     const handleFormDateEnd = (event: any) => setFormDateEnd(event.target.value);
 
     const handleFindBtnClick = () => {
-
-        console.log("Filters: ", titleFilter, statusFilter, formDateStart, formDateEnd);
         setStartDateAction(String(formDateStart));
         setEndDateAction(String(formDateEnd));
         setStatusDataAction(statusFilter);
@@ -168,29 +174,21 @@ const FlightsPage: FC<Props> = ({ changeBreadcrump }) => {
                                         <td><Link to={`/rocket_flights/${value.flight_id}`}>{value.place_number}</Link></td>
                                         <td><Link to={`/rocket_flights/${value.flight_id}`}>{dateConversion(value.flight_date)}</Link></td>
                                         <td><Link to={`/rocket_flights/${value.flight_id}`}>{dateConversion(value.formed_at)}</Link></td>
-                                        <td><Link to={`/rocket_flights/${value.flight_id}`}>{value.status}</Link></td>
+                                        {value.status ? (
+                                            <td><Link to={`/rocket_flights/${value.flight_id}`}>{rusStatus[value.status]}</Link></td>    
+                                        ) : (
+                                            <td><Link to={`/rocket_flights/${value.flight_id}`}>{rusStatus["unknown"]}</Link></td>
+                                        )}
                                     </tr>
                             ))}
                         </tbody>
                     </table>
                 </div>
-            
-                // <div className="card_container">
-                //     {rocketFlights.map((value, id) => {
-                //         // return (<PayloadCard data={value} key={id} payloadsInDraft = { rocketFlights } setDraftID = { setDraftID }></PayloadCard>);
-                //         return (
-                //             <div key={ id + 1 }>{ id + 1 } { value.title } { value.status } { dateConversion(value.flight_date) } 
-                //                 { dateConversion(value.formed_at) }  { value.place_number} </div>
-                //         );
-                //     })}
-                // </div> 
                 :
                 <div style={{textAlign: 'center', padding: '3em 0 3em 0'}}>
                     <h1>Ничего не найдено</h1>
                 </div>
             }
-            {/* 1 Тестовый полёт 1           formed Wed Dec 27 2023 15:34:56 GMT+0300 (GMT+03:00)  Fri Jan 26 2024 02:54:10 GMT+0300 (GMT+03:00) 1
-                6 Тестовый полёт v2 new_user formed Wed Dec 27 2023 15:34:56 GMT+0300 (GMT+03:00)  Wed Jan 31 2024 00:09:17 GMT+0300 (GMT+03:00) 1*/}
         </div>
     )
 }

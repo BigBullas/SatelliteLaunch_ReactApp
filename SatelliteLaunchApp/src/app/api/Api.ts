@@ -576,7 +576,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     formCreate: (flightStatus: ModelsRocketFlight, params: RequestParams = {}) =>
       this.request<string, any>({
         path: `/rocket_flights/form`,
-        method: "POST",
+        method: "PUT",
         withCredentials: true,
         body: flightStatus,
         type: ContentType.Json,

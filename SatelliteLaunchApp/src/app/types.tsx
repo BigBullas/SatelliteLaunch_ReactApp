@@ -11,6 +11,7 @@ export type PayloadCardType = {
     flight_date_end: Date
     desired_price: number
     detailed_desc: string
+    count?: number
 }
 
 export type RocketFlightType = {
@@ -23,7 +24,7 @@ export type RocketFlightType = {
     created_at?: Date
     formed_at?: Date
     confirmed_at?: Date
-    flight_date?: Date
+    flight_date?: Date | string
     price?: number
     title?: string
     place_number?: number

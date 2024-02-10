@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&family=Poppins:wght@500&family=Roboto:wght@500&display=swap');
+@import url('https://fonts.cdnfonts.com/css/st-simplesquare');
+
 body {
   	padding: 0px;
 	margin: 0px;
@@ -21,7 +24,7 @@ a {
 
 .title {
 	font-family: 'ST-SIMPLESQUARE', sans-serif;
-	font-weight: bold;
+	/* font-weight: bold; */
 }
 
 .text_desc {
