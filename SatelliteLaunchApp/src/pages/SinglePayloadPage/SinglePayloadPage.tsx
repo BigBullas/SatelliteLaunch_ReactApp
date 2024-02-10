@@ -20,7 +20,7 @@ const SinglePayloadPage: FC<Props> = ({changeBreadcrump}) => {
 
     const getPayloadById = async () => {
         try {
-            let query = `http://localhost:8080/api/payloads/${ id }`;
+            let query = `http://localhost:8080/payloads/${ id }`;
 
             const response = await fetch(query);
 

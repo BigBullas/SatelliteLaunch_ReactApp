@@ -120,7 +120,6 @@ const PayloadsPage: FC<Props> = ({ changeBreadcrump }) => {
                     <input
                     className="input_search"
                     placeholder="Введите название КА"
-                    defaultValue=""
                     value={ spaceSatellite }
                     onChange={(event => setSpaceSatellite(event.target.value))}
                     />
@@ -136,7 +135,6 @@ const PayloadsPage: FC<Props> = ({ changeBreadcrump }) => {
                             min={0}
                             max={500}
                             placeholder='0'
-                            defaultValue=""
                             value={ loadCapacityStart }
                             onChange={ handleLoadCapacityStart }
                             />
@@ -150,7 +148,6 @@ const PayloadsPage: FC<Props> = ({ changeBreadcrump }) => {
                             min={0}
                             max={500}
                             placeholder='500'
-                            defaultValue=""
                             value={ loadCapacityEnd }
                             onChange={ handleLoadCapacityEnd }
                             />
@@ -164,7 +161,6 @@ const PayloadsPage: FC<Props> = ({ changeBreadcrump }) => {
                             <input 
                             className="input_search" 
                             type="datetime-local" 
-                            defaultValue="" 
                             value={ String(flightDateStart) } 
                             onChange={ handleFlightDateStart }/>
                         </div>
@@ -173,7 +169,6 @@ const PayloadsPage: FC<Props> = ({ changeBreadcrump }) => {
                             <input 
                             className="input_search" 
                             type="datetime-local" 
-                            defaultValue=""
                             value={ String(flightDateEnd) }
                             onChange={ handleFlightDateEnd }/>
                         </div>
