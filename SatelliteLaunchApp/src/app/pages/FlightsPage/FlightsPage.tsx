@@ -21,7 +21,7 @@ const rusStatus: { [key: string]: string } = {
 }
 
 const FlightsPage: FC<Props> = ({ changeBreadcrump }) => {
-    const { title, minDate, maxDate, status, setStartDateAction, setEndDateAction, setStatusDataAction, setTitleDataAction} = useFlightList();
+    const { creatorLogin, minDate, maxDate, status, setStartDateAction, setEndDateAction, setStatusDataAction, setCreatorLogin} = useFlightList();
     const { isAuthorized, is_admin } = useUser();
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -30,31 +30,31 @@ const FlightsPage: FC<Props> = ({ changeBreadcrump }) => {
     const [statusFilter, setStatusFilter] = useState<string>(status ? status : 'Все');
     const [formDateStart, setFormDateStart] = useState<Date | string>(minDate);
     const [formDateEnd, setFormDateEnd] = useState<Date | string>(maxDate);
-    const [titleFilter, setTitleFilter] = useState<string>(title);
+    const [loginCreatorFilter, setLoginCreatorFilter] = useState<string>(creatorLogin);
 
     const [rocketFlights, setRocketFlights] = useState<RocketFlightType[]>([])
 
     useEffect(() => {
         is_admin ? changeBreadcrump('Планируемые полёты', 'rocket_flights') : changeBreadcrump('Мои полёты', 'rocket_flights');
         console.log('timeout started');
-        getRocketFlightList(statusFilter, formDateStart, formDateEnd, titleFilter);
+        getRocketFlightList(statusFilter, formDateStart, formDateEnd, loginCreatorFilter);
 
         const timeout = setInterval(() => {
-            console.log('timeout worked');
-            getRocketFlightList(statusFilter, formDateStart, formDateEnd, titleFilter);
+            getRocketFlightList(statusFilter, formDateStart, formDateEnd, loginCreatorFilter);
         }, 5000);
         return () => clearInterval(timeout);
-    }, [])
+    }, [status, minDate, maxDate, creatorLogin])
 
-    const getRocketFlightList = async (statusValue: string, formDateStart: Date | string, formDateEnd: string | Date, titleFilter: string) => {
+    const getRocketFlightList = async (statusValue: string, formDateStart: Date | string, formDateEnd: string | Date, creatorLoginFilter: string) => {
         setLoading(true);
+        console.log("getRocketFlightList: ", status, creatorLoginFilter);
         try {
             statusValue = statusValue === 'Все' ? '' : statusValue;
             const response = await api.rocketFlights.rocketFlightsList({
                 status: statusValue ?? "",
                 form_date_start: String(formDateStart) ?? "",
                 form_date_end: String(formDateEnd) ?? "",
-            })
+            });
 
             console.log("data RocketFlights: ", response.data);
 
@@ -85,10 +85,8 @@ const FlightsPage: FC<Props> = ({ changeBreadcrump }) => {
                 resRocketFlight = {};
             })
             
-            console.log("resRocketFlights: ", resRocketFlights);
-
-            if (titleFilter) {
-                resRocketFlights = resRocketFlights.filter((item) => item.title?.includes(titleFilter));
+            if (creatorLoginFilter) {
+                resRocketFlights = resRocketFlights.filter((item) => item.creator_login?.includes(creatorLoginFilter));
             }
 
             setRocketFlights(resRocketFlights);
@@ -100,7 +98,7 @@ const FlightsPage: FC<Props> = ({ changeBreadcrump }) => {
      }
     
     const handleStatusFilter = (event: any) => setStatusFilter(event.target.value);
-    const handleTitleFilter = (event: any) => setTitleFilter(event.target.value);
+    const handleCreatorLoginFilter = (event: any) => setLoginCreatorFilter(event.target.value);
 
     const handleFormDateStart = (event: any) => setFormDateStart(event.target.value);
     const handleFormDateEnd = (event: any) => setFormDateEnd(event.target.value);
@@ -109,8 +107,8 @@ const FlightsPage: FC<Props> = ({ changeBreadcrump }) => {
         setStartDateAction(String(formDateStart));
         setEndDateAction(String(formDateEnd));
         setStatusDataAction(statusFilter);
-        setTitleDataAction(titleFilter)
-        getRocketFlightList(statusFilter,  formDateStart, formDateEnd, titleFilter);
+        setCreatorLogin(loginCreatorFilter);
+        getRocketFlightList(statusFilter, formDateStart, formDateEnd, loginCreatorFilter);
     }
 
     const handleCompleteStatusClick = async (event: any) => {
@@ -131,7 +129,7 @@ const FlightsPage: FC<Props> = ({ changeBreadcrump }) => {
                     return value;
                 }));
             } else {
-                setErrorStatusFLight("Ошибка")
+                setErrorStatusFLight("Ошибка");
             }
 
             setTimeout(() => setErrorStatusFLight(" "), 3000);
@@ -158,7 +156,7 @@ const FlightsPage: FC<Props> = ({ changeBreadcrump }) => {
                     return value;
                 }));
             } else {
-                setErrorStatusFLight("Ошибка")
+                setErrorStatusFLight("Ошибка");
             }
 
             setTimeout(() => setErrorStatusFLight(" "), 3000);
@@ -181,9 +179,9 @@ const FlightsPage: FC<Props> = ({ changeBreadcrump }) => {
                 <div style={{flexGrow: '2', display: 'flex' }}>
                     <input
                     className="input_search"
-                    placeholder="Введите название полёта"
-                    value={ titleFilter }
-                    onChange={ handleTitleFilter }
+                    placeholder="Введите логин руководителя"
+                    value={ loginCreatorFilter }
+                    onChange={ handleCreatorLoginFilter }
                     />
                 </div>
                 <div className="filter__container">
@@ -221,6 +219,7 @@ const FlightsPage: FC<Props> = ({ changeBreadcrump }) => {
                             <tr>
                                 <th>№</th>
                                 <th>Название полёта</th>
+                                <th>Руководитель полёта</th>
                                 <th>№ площадки</th>
                                 <th>Дата полёта</th>
                                 <th>Дата формирования</th>
@@ -232,6 +231,7 @@ const FlightsPage: FC<Props> = ({ changeBreadcrump }) => {
                                     <tr key={index}>
                                         <td><Link to={`/rocket_flights/${value.flight_id}`}>{index + 1}</Link></td>
                                         <td><Link to={`/rocket_flights/${value.flight_id}`}>{value.title}</Link></td>
+                                        <td><Link to={`/rocket_flights/${value.flight_id}`}>{value.creator_login}</Link></td>
                                         <td><Link to={`/rocket_flights/${value.flight_id}`}>{value.place_number}</Link></td>
                                         <td><Link to={`/rocket_flights/${value.flight_id}`}>{dateConversion(value.flight_date)}</Link></td>
                                         <td><Link to={`/rocket_flights/${value.flight_id}`}>{dateConversion(value.formed_at)}</Link></td>
@@ -240,9 +240,9 @@ const FlightsPage: FC<Props> = ({ changeBreadcrump }) => {
                                                 <td>
                                                     <div style={{display: 'flex', flexWrap: 'wrap'}}>
                                                         <button className='btn_flight' id = { String(value.flight_id) } 
-                                                            onClick={ handleCompleteStatusClick }>Сохранить</button>
+                                                            onClick={ handleCompleteStatusClick }>Утвердить</button>
                                                         <button className='btn_exit' id = { String(value.flight_id) }
-                                                            onClick={ handleRejectStatusClick }>Удалить</button>
+                                                            onClick={ handleRejectStatusClick }>Отклонить</button>
                                                     </div>
                                                     <div className='error'>{ errorStatusFLight }</div>
                                                     <div className='right'>{ errorStatusFLight === "" && "Успешно"}</div>

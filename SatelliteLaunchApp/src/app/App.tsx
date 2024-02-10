@@ -15,6 +15,7 @@ import ProfilePage from './pages/ProfilePage'
 import FlightsPage from './pages/FlightsPage'
 import SingleFlightPage from './pages/SingleFlightPage'
 import { useUser } from './hooks/useUser'
+import EditPayloadListPage from './pages/EditPayloadListPage'
 
 const App: React.FC = () => {
   const [draftID, setDraftID] = useState(0);
@@ -87,9 +88,13 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/" element={<PayloadsPage changeBreadcrump = {changeBreadcrump} payloads={ payloads }
          loading = { loading } getPayloadList={ getPayloadList } draftID = { draftID } setDraftID = { setDraftID }/>} />
-        <Route path="/payloads/:id" element = {<SinglePayloadPage changeBreadcrump = {changeBreadcrump} />} />
+        <Route path="/edit_payloads/" element = {<EditPayloadListPage changeBreadcrump={changeBreadcrump}/> } />
+        <Route path="/edit_payload/:id" element = {<SinglePayloadPage changeBreadcrump = {changeBreadcrump} />} />
+        <Route path="/payload/:id" element = {<SinglePayloadPage changeBreadcrump = {changeBreadcrump} />} />
+
         <Route path="/rocket_flights" element = { <FlightsPage changeBreadcrump={changeBreadcrump}/> }/>
-        <Route path="/rocket_flights/:id" element = { <SingleFlightPage changeBreadcrump={changeBreadcrump} draftId={draftID} setDraftId={ setDraftID }/> }/>
+        <Route path="/rocket_flight/:id" element = { <SingleFlightPage changeBreadcrump={changeBreadcrump} draftId={draftID} setDraftId={ setDraftID }/> }/>
+
         <Route path="/auth" element = { <AuthPage changeBreadcrump = {changeBreadcrump}/> }/>
         <Route path="/reg" element = { <RegPage  changeBreadcrump = {changeBreadcrump}/> }/>
         <Route path="/profile" element = { <ProfilePage changeBreadcrump={changeBreadcrump} draftID = { draftID } setDraftID = { setDraftID } />}/>
@@ -101,6 +106,3 @@ const App: React.FC = () => {
 {/* </HashRouter> */}
 
 export default App
-
-// TODO: может ли админ создавать заявку черновик и добавлять туда услуги? если нет, то надо убрать функционал добавления услуги в заявку
-// на странице PayloadsPage, а также убрать кнопку Моя заявка для админа - написать Журмилову

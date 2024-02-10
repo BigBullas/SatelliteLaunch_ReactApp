@@ -47,16 +47,6 @@ const SinglePayloadPage: FC<Props> = ({changeBreadcrump}) => {
                         <div className="card-img" style={{ backgroundImage: `url(${ payload?.img_url || defaultImage})` }}></div>
                     </div>
                     <div className="card-content">
-                        {/* <div className="card-btn_container"> */}
-                            {/* <Link to="/payloads">Назад</Link> */}
-                            {/* <a href='http://localhost:3000/payloads'>Назад</a> */}
-                            {/* <form action="/home">
-                            <input type="submit" defaultValue="Назад" />
-                            </form> */}
-                            {/* <form action="http://localhost:8080/payload/{{ .card.PayloadId }}" method="post">
-                            <button className="card-button">Удалить услугу</button>
-                            </form> */}
-                        {/* </div> */}
                         <div className="card-text_container">
                             <h3 className='title'>
                             { payload?.title }

@@ -98,7 +98,7 @@ const PayloadCard: FC<Props> = ({ data, payloadsInDraft, setDraftID, container, 
     
     return (
         <div id ={ String(data.payload_id) } className="card">
-            <Link to={`/payloads/${ data.payload_id }`}>
+            <Link to={`/payload/${ data.payload_id }`}>
                 <div className="card-img_container">
                     <div className="card-img" style={{ backgroundImage: `url(${ data.img_url ||  defaultImage })` }}></div>
                 </div>

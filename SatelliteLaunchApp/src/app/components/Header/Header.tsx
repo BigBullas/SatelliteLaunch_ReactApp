@@ -28,7 +28,7 @@ const Header: FC = () => {
                     (
                         <>
                             <Link to="/rocket_flights">Планируемые полёты</Link>
-                            <Link to="/">Модерация КА</Link>
+                            <Link to="/edit_payloads">Модерация КА</Link>
                         </>
                     )
                 }
