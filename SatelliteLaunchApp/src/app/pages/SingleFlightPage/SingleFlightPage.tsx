@@ -42,7 +42,7 @@ const SingleFlightPage: FC<Props> = ({changeBreadcrump, draftId, setDraftId}) =>
         getRocketFlightById();
         setIsDraft(id === draftId);
 
-        changeBreadcrump(['Мои полёты', id === draftId ? 'Полёт-черновик' : `Полёт №${id}`], ['rocket_flights', `rocket_flights/${id}`]);
+        changeBreadcrump(['Мои полёты', id === draftId ? 'Полёт-черновик' : `Полёт №${id}`], ['rocket_flights', `rocket_flight/${id}`]);
     }, [id, draftId])
 
     const getRocketFlightById = async () => {
@@ -89,7 +89,7 @@ const SingleFlightPage: FC<Props> = ({changeBreadcrump, draftId, setDraftId}) =>
 		} catch (error: any) {
 			console.log(error);
             setIsDeleteDraftError(false);
-            setIsFormError(true);
+            setIsFormError(false);
             setIsError(true);
             setIsRight(false);
 		}
@@ -224,10 +224,10 @@ const SingleFlightPage: FC<Props> = ({changeBreadcrump, draftId, setDraftId}) =>
                                 (<div className='loading'>Загрузка</div>)
                             }
                             {isError &&
-                                (<div className='error'>Неверный логин, пароль или email</div>)
+                                (<div className='error'>Неверно введены данные в требуемые поля</div>)
                             }
                             {isFormError &&
-                                (<div className='error'>Возникла ошибка при выходе, повторите позже</div>)
+                                (<div className='error'>Возникла ошибка при формировании заявки на полёт, повторите позже</div>)
                             }
                             {isDeleteDraftError &&
                                 (<div className='error'>Возникла ошибка при удалении вашей заявки, повторите позже</div>)

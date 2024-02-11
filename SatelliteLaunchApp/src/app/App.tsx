@@ -89,8 +89,8 @@ const App: React.FC = () => {
         <Route path="/" element={<PayloadsPage changeBreadcrump = {changeBreadcrump} payloads={ payloads }
          loading = { loading } getPayloadList={ getPayloadList } draftID = { draftID } setDraftID = { setDraftID }/>} />
         <Route path="/edit_payloads/" element = {<EditPayloadListPage changeBreadcrump={changeBreadcrump}/> } />
-        <Route path="/edit_payload/:id" element = {<SinglePayloadPage changeBreadcrump = {changeBreadcrump} />} />
-        <Route path="/payload/:id" element = {<SinglePayloadPage changeBreadcrump = {changeBreadcrump} />} />
+        <Route path="/edit_payload/:id" element = {<SinglePayloadPage changeBreadcrump = {changeBreadcrump} isEdit = {true}/>} />
+        <Route path="/payload/:id" element = {<SinglePayloadPage changeBreadcrump = {changeBreadcrump} isEdit = {false}/>} />
 
         <Route path="/rocket_flights" element = { <FlightsPage changeBreadcrump={changeBreadcrump}/> }/>
         <Route path="/rocket_flight/:id" element = { <SingleFlightPage changeBreadcrump={changeBreadcrump} draftId={draftID} setDraftId={ setDraftID }/> }/>

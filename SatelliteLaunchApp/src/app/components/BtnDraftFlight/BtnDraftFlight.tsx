@@ -11,9 +11,9 @@ const BtnDraftFlight: FC<Props> = ({ draftID }) => (
    
     <div className="">
          {typeof(draftID) === 'number' && draftID ?
-            (<Link to={`/rocket_flights/${ draftID }`} className="btn-draft">Мой полёт</Link>)
+            (<Link to={`/rocket_flight/${ draftID }`} className="btn-draft">Мой полёт</Link>)
             :
-            (<Link to={`/rocket_flights/${ draftID }`} className="btn-draft__disabled" onClick={(event) => event.preventDefault()}>Мой полёт</Link>)
+            (<Link to={`/rocket_flight/${ draftID }`} className="btn-draft__disabled" onClick={(event) => event.preventDefault()}>Мой полёт</Link>)
         }
      </div>
 )

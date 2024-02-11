@@ -229,12 +229,12 @@ const FlightsPage: FC<Props> = ({ changeBreadcrump }) => {
                         <tbody>
                             {rocketFlights.map((value, index) => (
                                     <tr key={index}>
-                                        <td><Link to={`/rocket_flights/${value.flight_id}`}>{index + 1}</Link></td>
-                                        <td><Link to={`/rocket_flights/${value.flight_id}`}>{value.title}</Link></td>
-                                        <td><Link to={`/rocket_flights/${value.flight_id}`}>{value.creator_login}</Link></td>
-                                        <td><Link to={`/rocket_flights/${value.flight_id}`}>{value.place_number}</Link></td>
-                                        <td><Link to={`/rocket_flights/${value.flight_id}`}>{dateConversion(value.flight_date)}</Link></td>
-                                        <td><Link to={`/rocket_flights/${value.flight_id}`}>{dateConversion(value.formed_at)}</Link></td>
+                                        <td><Link to={`/rocket_flight/${value.flight_id}`}>{index + 1}</Link></td>
+                                        <td><Link to={`/rocket_flight/${value.flight_id}`}>{value.title}</Link></td>
+                                        <td><Link to={`/rocket_flight/${value.flight_id}`}>{value.creator_login}</Link></td>
+                                        <td><Link to={`/rocket_flight/${value.flight_id}`}>{value.place_number}</Link></td>
+                                        <td><Link to={`/rocket_flight/${value.flight_id}`}>{dateConversion(value.flight_date)}</Link></td>
+                                        <td><Link to={`/rocket_flight/${value.flight_id}`}>{dateConversion(value.formed_at)}</Link></td>
                                         {value.status ? (
                                             value.status === "formed" && is_admin ? (
                                                 <td>
@@ -248,10 +248,10 @@ const FlightsPage: FC<Props> = ({ changeBreadcrump }) => {
                                                     <div className='right'>{ errorStatusFLight === "" && "Успешно"}</div>
                                                 </td>    
                                             ) : (
-                                                <td><Link to={`/rocket_flights/${value.flight_id}`}>{rusStatus[value.status]}</Link></td>    
+                                                <td><Link to={`/rocket_flight/${value.flight_id}`}>{rusStatus[value.status]}</Link></td>    
                                             ) 
                                         ) : (
-                                            <td><Link to={`/rocket_flights/${value.flight_id}`}>{rusStatus["unknown"]}</Link></td>
+                                            <td><Link to={`/rocket_flight/${value.flight_id}`}>{rusStatus["unknown"]}</Link></td>
                                         )}
                                     </tr>
                             ))}
