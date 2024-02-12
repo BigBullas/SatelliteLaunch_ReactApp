@@ -203,7 +203,7 @@ const SinglePayloadPage: FC<Props> = ({changeBreadcrump, isEdit}) => {
     }
 
     return (
-        <div>
+        <div style={{padding: '0 1.5em 2em 1.5em'}}>
             {isEdit ? (
                 isAuthorized && is_admin ? (
                     <div className="container_flight">
