@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { HashRouter, BrowserRouter, Route, Routes } from 'react-router-dom'
+import { HashRouter, Route, Routes } from 'react-router-dom'
 import SinglePayloadPage from './pages/SinglePayloadPage'
 import PayloadsPage from './pages/PayloadsPage'
 import Header from './components/Header/Header'
