@@ -19,5 +19,3 @@ const BtnDraftFlight: FC<Props> = ({ draftID }) => (
 )
 
 export default BtnDraftFlight;
-
-// TODO: убрать кнопку, если админ находится на страницах Модерации полезных нагрузок или на странице Планируемые полёты

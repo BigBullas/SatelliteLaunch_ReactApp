@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import './PayloadCard.css';
 import defaultImage from '../../assets/default_image.jpg';
 
@@ -10,50 +10,33 @@ import { useUser } from '../../hooks/useUser';
 
 type Props = {
     data: PayloadCardType
-    payloadsInDraft: PayloadCardType[]
     setDraftID: Function
     container: "payloadList" | "flightRequest" | "draftFlightRequest"
     deletePayloadCard: Function
 }
 
-const PayloadCard: FC<Props> = ({ data, payloadsInDraft, setDraftID, container, deletePayloadCard }) => {
-    const [isInDraft, setIsInDraft] = useState<boolean>(false);
-
+const PayloadCard: FC<Props> = ({ data, setDraftID, container, deletePayloadCard }) => {
     const [count, setCount] = useState<number | undefined>(data.count)
     const [errorCount, setErrorCount] = useState<string>(" ");
-
-    useEffect(() => {
-        payloadsInDraft.forEach((item) => {
-            if (item.payload_id === data.payload_id) {
-                setIsInDraft(true);
-            }
-        })
-    }, [payloadsInDraft.length])
 
     const { isAuthorized } = useUser();
 
     const handleBtnAddClick = async (event: any) => {
         event.preventDefault();
         try {
-            console.log("event.target.id: ", event.target.id);
-            const response = await api.payloads.rocketFlightCreate(Number(event.target.id));
-            // if (response.status === 200) {
-            //     const  
-            // }
-
-            // TODO: подумать над тем, как убрать гет заявки и при этом отображать у карточек актуальное состояние (в заявке или нет)
-            // можно спрятать под гетом списка услуг и id черновика получение заявки с её услугами
-
-            setDraftID(response.data);
-            setIsInDraft(true);
-
-            console.log("data(draftId): ", response.data);
-    
+            const responseCreate = await api.payloads.rocketFlightCreate(Number(event.target.id));
+            if (responseCreate.status === 200) {
+                const responseGetPayloadList = await api.payloads.payloadsList();
+                // @ts-ignore
+                console.log("draftId from getList: ", responseGetPayloadList.data, responseGetPayloadList.data.draftRocketFlightId);
+                if (responseGetPayloadList.status === 200) {
+                    // @ts-ignore
+                    setDraftID(responseGetPayloadList.data.draftRocketFlightId);
+                }
+            }
         } catch (error) {
             console.log("Error: ", error);
         }
-        
-        console.log("setDraftID, btnAddClick, payload_id: ", event.target.id);
     }
 
     const handleChangeCountClick = (event: any) => {
@@ -125,11 +108,7 @@ const PayloadCard: FC<Props> = ({ data, payloadsInDraft, setDraftID, container, 
                     {isAuthorized && (
                         container === "payloadList" ? (
                             <div className="card-btn_container">
-                                {isInDraft ? 
-                                    (<button className='btn_add' id= { String(data.payload_id) } disabled={ true }>В заявке</button>)
-                                    :
-                                    (<button className='btn_add' id= { String(data.payload_id) } onClick={ handleBtnAddClick }>Добавить в заявку</button>)
-                                }
+                                <button className='btn_add' id= { String(data.payload_id) } onClick={ handleBtnAddClick }>Добавить в заявку</button>
                             </div>
                         ) : (
                             container == "draftFlightRequest" ? (

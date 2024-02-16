@@ -23,7 +23,6 @@ const rusStatus: { [key: string]: string } = {
 const FlightsPage: FC<Props> = ({ changeBreadcrump }) => {
     const { creatorLogin, minDate, maxDate, status, setStartDateAction, setEndDateAction, setStatusDataAction, setCreatorLogin} = useFlightList();
     const { isAuthorized, is_admin } = useUser();
-    const [loading, setLoading] = useState<boolean>(false);
 
     const [errorStatusFLight, setErrorStatusFLight] = useState<string>(" ");
 
@@ -36,7 +35,6 @@ const FlightsPage: FC<Props> = ({ changeBreadcrump }) => {
 
     useEffect(() => {
         is_admin ? changeBreadcrump('Планируемые полёты', 'rocket_flights') : changeBreadcrump('Мои полёты', 'rocket_flights');
-        console.log('timeout started');
         getRocketFlightList(statusFilter, formDateStart, formDateEnd, loginCreatorFilter);
 
         const timeout = setInterval(() => {
@@ -46,8 +44,6 @@ const FlightsPage: FC<Props> = ({ changeBreadcrump }) => {
     }, [status, minDate, maxDate, creatorLogin])
 
     const getRocketFlightList = async (statusValue: string, formDateStart: Date | string, formDateEnd: string | Date, creatorLoginFilter: string) => {
-        setLoading(true);
-        console.log("getRocketFlightList: ", status, creatorLoginFilter);
         try {
             statusValue = statusValue === 'Все' ? '' : statusValue;
             const response = await api.rocketFlights.rocketFlightsList({
@@ -55,8 +51,6 @@ const FlightsPage: FC<Props> = ({ changeBreadcrump }) => {
                 form_date_start: String(formDateStart) ?? "",
                 form_date_end: String(formDateEnd) ?? "",
             });
-
-            console.log("data RocketFlights: ", response.data);
 
             let resRocketFlights: RocketFlightType[] = [];
             let resRocketFlight: RocketFlightType = {};
@@ -94,16 +88,33 @@ const FlightsPage: FC<Props> = ({ changeBreadcrump }) => {
         } catch (error) {
             console.log("Error: ", error);
         }
-        setLoading(false);
-     }
+    }
     
-    const handleStatusFilter = (event: any) => setStatusFilter(event.target.value);
-    const handleCreatorLoginFilter = (event: any) => setLoginCreatorFilter(event.target.value);
+    const handleStatusFilter = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setStatusFilter(event.target.value);
+        getFlightListWithFilters();
+    }
 
-    const handleFormDateStart = (event: any) => setFormDateStart(event.target.value);
-    const handleFormDateEnd = (event: any) => setFormDateEnd(event.target.value);
+    const handleFormDateStart = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setFormDateStart(event.target.value);
+        getFlightListWithFilters();
+    }
+    const handleFormDateEnd = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setFormDateEnd(event.target.value);
+        getFlightListWithFilters();
+    }
 
-    const handleFindBtnClick = () => {
+    const handleCreatorLoginFilter = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setLoginCreatorFilter(event.target.value);
+    }
+
+    const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            getFlightListWithFilters();
+        }
+    }
+    
+    const getFlightListWithFilters = () => {
         setStartDateAction(String(formDateStart));
         setEndDateAction(String(formDateEnd));
         setStatusDataAction(statusFilter);
@@ -114,8 +125,6 @@ const FlightsPage: FC<Props> = ({ changeBreadcrump }) => {
     const handleCompleteStatusClick = async (event: any) => {
         event.preventDefault();
         const flight_id = event.target.id;
-
-        console.log("flight_id: ", flight_id);
 
         try {
             const response = await api.rocketFlights.responseUpdate(flight_id, {status: "completed"});
@@ -142,8 +151,6 @@ const FlightsPage: FC<Props> = ({ changeBreadcrump }) => {
         event.preventDefault();
         const flight_id = event.target.id;
 
-        console.log("flight_id: ", flight_id);
-        
         try {
             const response = await api.rocketFlights.responseUpdate(flight_id, {status: "rejected"});
             
@@ -182,6 +189,7 @@ const FlightsPage: FC<Props> = ({ changeBreadcrump }) => {
                     placeholder="Введите логин руководителя"
                     value={ loginCreatorFilter }
                     onChange={ handleCreatorLoginFilter }
+                    onKeyDown={ handleKeyPress }
                     />
                 </div>
                 <div className="filter__container">
@@ -204,12 +212,6 @@ const FlightsPage: FC<Props> = ({ changeBreadcrump }) => {
                         </div>
                     </div>
                 </div>
-                <div 
-                    className="btn_find" 
-                    aria-disabled={ !loading }
-                    onClick={ handleFindBtnClick }>
-                    Найти
-                </div>
             </div>
            
             {rocketFlights && rocketFlights.length > 0 && isAuthorized ?
@@ -223,6 +225,7 @@ const FlightsPage: FC<Props> = ({ changeBreadcrump }) => {
                                 <th>№ площадки</th>
                                 <th>Дата полёта</th>
                                 <th>Дата формирования</th>
+                                <th>Стоимость, млн</th>
                                 <th>Статус</th>
                             </tr>
                         </thead>
@@ -235,6 +238,7 @@ const FlightsPage: FC<Props> = ({ changeBreadcrump }) => {
                                         <td><Link to={`/rocket_flight/${value.flight_id}`}>{value.place_number}</Link></td>
                                         <td><Link to={`/rocket_flight/${value.flight_id}`}>{dateConversion(value.flight_date)}</Link></td>
                                         <td><Link to={`/rocket_flight/${value.flight_id}`}>{dateConversion(value.formed_at)}</Link></td>
+                                        <td><Link to={`/rocket_flight/${value.flight_id}`}>{value.price ?? ' - '}</Link></td>
                                         {value.status ? (
                                             value.status === "formed" && is_admin ? (
                                                 <td>

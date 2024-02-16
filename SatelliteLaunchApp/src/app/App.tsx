@@ -51,13 +51,9 @@ const App: React.FC = () => {
         // @ts-ignore
         const { draftRocketFlightId, payloads: receivedPayloads } = response.data;
 
-        console.log("data: ", response.data, draftRocketFlightId, receivedPayloads);
-
         setPayloads(receivedPayloads);
         setDraftID(draftRocketFlightId);
         
-        console.log("draftID: ", draftID, draftRocketFlightId)
-
       } catch (error) {
           console.log("Error: ", error);
 

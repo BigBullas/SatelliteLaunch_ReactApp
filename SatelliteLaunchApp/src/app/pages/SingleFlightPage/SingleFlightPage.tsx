@@ -249,7 +249,7 @@ const SingleFlightPage: FC<Props> = ({changeBreadcrump, draftId, setDraftId}) =>
             {payloads && payloads.length > 0 ?
                 <div className="card_container">
                     {payloads.map((value, id) => {
-                        return (<PayloadCard data={value} key={id} payloadsInDraft = { [] } deletePayloadCard={ deletePayloadCard }
+                        return (<PayloadCard data={value} key={id} deletePayloadCard={ deletePayloadCard }
                              setDraftID = { () => {} } container={ isDraft ? 'draftFlightRequest' : 'flightRequest'}></PayloadCard>);
                     })}
                 </div> :
@@ -263,7 +263,3 @@ const SingleFlightPage: FC<Props> = ({changeBreadcrump, draftId, setDraftId}) =>
 }
 
 export default SingleFlightPage
-
-// TODO: при любом изменении черновика шлём Гет запрос этой заявки
-
-// TODO: исправить, чтобы можно было изменять только 1 поле (например, только название), сейчас с ошибкой
